@@ -1,0 +1,1424 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Banca em 5 Dias</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: barra fixa de progresso no topo, índice lateral fixo em ecrã largo, coluna de leitura única em telemóvel. */
+:root{
+  --bg:#F2F5F6; --surface:#FFFFFF; --surface-2:#E8EEEF;
+  --ink:#121E23; --muted:#566A73; --line:#D2DDDF;
+  --accent:#0E5B63; --accent-soft:#D7EAEA;
+  --gold:#A8711A; --gold-soft:#F6E9D2;
+  --good:#1F6F4F; --bad:#A33228;
+  --font-display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --font-body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --shadow:0 1px 2px rgba(18,30,35,.06),0 8px 24px -16px rgba(18,30,35,.25);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0C1316; --surface:#141D21; --surface-2:#1C282C;
+  --ink:#E4EDEF; --muted:#9BAFB6; --line:#2A383D;
+  --accent:#4FB5AE; --accent-soft:#163135;
+  --gold:#DDA64A; --gold-soft:#332715;
+  --good:#58BC8E; --bad:#E58175;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -18px rgba(0,0,0,.8);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0C1316; --surface:#141D21; --surface-2:#1C282C;
+  --ink:#E4EDEF; --muted:#9BAFB6; --line:#2A383D;
+  --accent:#4FB5AE; --accent-soft:#163135;
+  --gold:#DDA64A; --gold-soft:#332715;
+  --good:#58BC8E; --bad:#E58175;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -18px rgba(0,0,0,.8);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:17px;line-height:1.65;-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--surface)}
+h1,h2,h3,h4{font-family:var(--font-display);text-wrap:balance;line-height:1.2;margin:0}
+p{margin:0}
+a{color:var(--accent)}
+code,.num{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+
+/* --- topo --- */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--surface);border-bottom:1px solid var(--line)}
+.top-in{max-width:1180px;margin:0 auto;padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{font-family:var(--font-display);font-weight:800;font-size:15px;letter-spacing:.02em;display:flex;align-items:center;gap:9px;min-width:0}
+.brand .mark{width:26px;height:26px;border-radius:6px;background:var(--accent);color:var(--surface);display:grid;place-items:center;font-size:12px;font-weight:800;flex:none}
+.prog{flex:1;min-width:160px;display:flex;align-items:center;gap:9px}
+.prog-track{flex:1;height:7px;border-radius:99px;background:var(--surface-2);overflow:hidden;min-width:0}
+.prog-fill{height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .35s ease}
+.prog-txt{font-family:var(--font-mono);font-size:12px;color:var(--muted);flex:none}
+.btn{font-family:var(--font-display);font-weight:600;font-size:13px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:7px 12px;cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+.btn:focus-visible,a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* --- grelha --- */
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px;display:grid;grid-template-columns:230px minmax(0,1fr);gap:40px;align-items:start}
+@media(max-width:900px){.wrap{grid-template-columns:minmax(0,1fr);gap:0}}
+nav.side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 62px);padding-block:28px;font-family:var(--font-display);font-size:13.5px}
+@media(max-width:900px){nav.side{position:static;padding-block:18px 0}}
+nav.side ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+@media(max-width:900px){nav.side ol{flex-direction:row;flex-wrap:wrap;gap:6px}}
+nav.side a{display:flex;gap:9px;align-items:baseline;text-decoration:none;color:var(--muted);padding:5px 8px;border-radius:7px;border-left:2px solid transparent}
+@media(max-width:900px){nav.side a{border:1px solid var(--line);border-left-width:1px;background:var(--surface)}}
+nav.side a:hover{color:var(--ink);background:var(--surface)}
+nav.side a.on{color:var(--ink);font-weight:700;border-left-color:var(--accent);background:var(--surface)}
+nav.side .k{font-family:var(--font-mono);font-size:11px;color:var(--accent);flex:none}
+nav.side .grp{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:16px 0 6px 8px;font-weight:700}
+@media(max-width:900px){nav.side .grp{width:100%;margin:12px 0 2px}}
+
+main{min-width:0;padding-block:28px}
+section.mod{margin-bottom:56px;scroll-margin-top:calc(env(safe-area-inset-top,0px) + 74px)}
+.eyebrow{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+h2.mt{font-size:clamp(25px,4.6vw,34px);font-weight:800;letter-spacing:-.02em;margin-bottom:6px}
+.sub{color:var(--muted);font-size:16px;margin-bottom:22px}
+h3{font-size:19px;font-weight:700;margin:30px 0 10px;letter-spacing:-.01em}
+h4{font-size:15px;font-weight:700;margin:0 0 6px}
+main p+p{margin-top:12px}
+ul.list{margin:10px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:7px}
+ul.list li::marker{color:var(--accent)}
+
+/* --- blocos --- */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;box-shadow:var(--shadow)}
+.gist{background:var(--accent-soft);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:16px 18px;margin:18px 0}
+.gist h4{color:var(--accent);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;font-family:var(--font-mono);font-weight:600}
+.warn{background:var(--gold-soft);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:10px;padding:16px 18px;margin:18px 0}
+.warn h4{color:var(--gold);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;font-family:var(--font-mono);font-weight:600}
+.defs{display:grid;gap:12px;margin:14px 0}
+@media(min-width:620px){.defs.two{grid-template-columns:1fr 1fr}}
+.def{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.def .t{font-family:var(--font-display);font-weight:700;font-size:15px;margin-bottom:4px}
+.def .d{font-size:15.5px}
+.def .ex{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:14.5px;color:var(--muted)}
+.case{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:18px 0;background:var(--surface)}
+.case .hd{background:var(--surface-2);padding:10px 16px;font-family:var(--font-mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.case .bd{padding:16px}
+.case .ans{margin-top:10px;padding-top:10px;border-top:1px solid var(--line);font-size:15.5px}
+.case .ans b{color:var(--good)}
+
+table{width:100%;border-collapse:collapse;font-size:15px;font-family:var(--font-display);font-weight:500}
+.tw{overflow-x:auto;margin:14px 0;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;background:var(--surface-2)}
+tr:last-child td{border-bottom:0}
+td.num,th.num{font-family:var(--font-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+figure{margin:20px 0}
+figure svg{display:block;width:100%;height:auto;max-width:100%}
+figcaption{font-size:13.5px;color:var(--muted);margin-top:8px;font-family:var(--font-display)}
+.fml{font-family:var(--font-mono);background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:11px 14px;font-size:15px;display:block;overflow-x:auto;white-space:nowrap}
+.fml+.fml{margin-top:8px}
+
+/* --- quiz --- */
+.quiz{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:18px;margin-top:22px}
+.quiz>h4{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+.q{padding:14px 0;border-top:1px solid var(--line)}
+.q:first-of-type{border-top:0;padding-top:0}
+.q .qt{font-weight:600;font-family:var(--font-display);font-size:15.5px;margin-bottom:9px;display:flex;gap:9px}
+.q .qt .n{font-family:var(--font-mono);color:var(--accent);font-size:13px;flex:none;padding-top:2px}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opt{display:flex;gap:9px;align-items:flex-start;border:1px solid var(--line);border-radius:8px;padding:9px 12px;cursor:pointer;background:var(--surface);font-size:15px;text-align:left;font-family:var(--font-body);color:var(--ink);width:100%}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt:disabled{cursor:default}
+.opt .l{font-family:var(--font-mono);font-size:12.5px;color:var(--muted);flex:none;padding-top:2px}
+.opt.ok{border-color:var(--good);background:color-mix(in srgb,var(--good) 12%,transparent)}
+.opt.no{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,transparent)}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft);font-weight:600}
+.why{margin-top:9px;font-size:14.5px;color:var(--muted);border-left:2px solid var(--line);padding-left:11px}
+.why b{color:var(--ink)}
+
+/* --- flashcards --- */
+.fcbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.fc{perspective:1200px;height:220px;cursor:pointer}
+.fc-in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.fc.flip .fc-in{transform:rotateY(180deg)}
+.fc-f,.fc-b{position:absolute;inset:0;backface-visibility:hidden;border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;justify-content:center;gap:8px;overflow:auto}
+.fc-f{background:var(--surface);align-items:center;text-align:center}
+.fc-b{background:var(--accent-soft);transform:rotateY(180deg)}
+.fc-f .term{font-family:var(--font-display);font-weight:700;font-size:21px}
+.fc-f .hint{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.fc-b .d{font-size:15.5px}
+@media(prefers-reduced-motion:reduce){.fc-in{transition:none}}
+
+/* --- exercícios --- */
+details.ex{border:1px solid var(--line);border-radius:10px;background:var(--surface);margin-bottom:10px;overflow:hidden}
+details.ex>summary{cursor:pointer;padding:13px 16px;font-family:var(--font-display);font-weight:600;font-size:15.5px;display:flex;gap:10px;align-items:baseline;list-style:none}
+details.ex>summary::-webkit-details-marker{display:none}
+details.ex>summary .tag{font-family:var(--font-mono);font-size:11px;color:var(--accent);flex:none}
+details.ex[open]>summary{border-bottom:1px solid var(--line);background:var(--surface-2)}
+.exb{padding:16px}
+.steps{display:flex;flex-direction:column;gap:9px;margin:10px 0 0;padding:0;list-style:none;counter-reset:s}
+.steps li{counter-increment:s;display:flex;gap:11px;font-size:15.5px}
+.steps li::before{content:counter(s);font-family:var(--font-mono);font-size:11px;color:#fff;background:var(--accent);width:19px;height:19px;border-radius:50%;display:grid;place-items:center;flex:none;margin-top:3px}
+.res{margin-top:12px;background:var(--accent-soft);border-radius:8px;padding:10px 14px;font-family:var(--font-mono);font-size:15px;font-weight:500}
+
+/* --- calculadora --- */
+.calc{display:grid;gap:14px}
+@media(min-width:680px){.calc{grid-template-columns:1fr 1fr}}
+.fld{display:flex;flex-direction:column;gap:5px}
+.fld label{font-family:var(--font-display);font-size:12.5px;font-weight:600;color:var(--muted)}
+.fld input,.fld select{font-family:var(--font-mono);font-size:15px;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);width:100%}
+.out{grid-column:1/-1;background:var(--surface-2);border-radius:10px;padding:16px;display:grid;gap:10px}
+@media(min-width:680px){.out{grid-template-columns:repeat(3,1fr)}}
+.out .k{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.out .v{font-family:var(--font-mono);font-size:19px;font-weight:600;font-variant-numeric:tabular-nums}
+
+/* --- exame --- */
+.score{display:flex;gap:18px;align-items:center;flex-wrap:wrap;background:var(--surface-2);border-radius:10px;padding:14px 18px;margin-top:16px}
+.score .big{font-family:var(--font-mono);font-size:30px;font-weight:600}
+.pill{display:inline-block;font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:99px;border:1px solid var(--line);color:var(--muted)}
+.done-row{display:flex;gap:10px;align-items:center;margin-top:20px;flex-wrap:wrap}
+footer{border-top:1px solid var(--line);margin-top:40px;padding-top:18px;font-size:14px;color:var(--muted)}
+</style>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand"><span class="mark">Kz</span><span>Banca em 5 Dias</span></div>
+    <div class="prog"><div class="prog-track"><div class="prog-fill" id="pf"></div></div><span class="prog-txt" id="pt">0 / 9</span></div>
+    <button class="btn" id="reset">Reiniciar</button>
+  </div>
+</header>
+
+<div class="wrap">
+<nav class="side">
+  <ol id="toc">
+    <li class="grp">Começar</li>
+    <li><a href="#plano"><span class="k">—</span>Plano de 5 dias</a></li>
+    <li class="grp">Módulos</li>
+    <li><a href="#m1"><span class="k">1</span>O banco como agente</a></li>
+    <li><a href="#m2"><span class="k">2</span>A moeda</a></li>
+    <li><a href="#m3"><span class="k">3</span>Operações bancárias</a></li>
+    <li><a href="#m4"><span class="k">4</span>A conta bancária</a></li>
+    <li><a href="#m5"><span class="k">5</span>Capacidade jurídica</a></li>
+    <li><a href="#m6"><span class="k">6</span>Sigilo bancário</a></li>
+    <li><a href="#m7"><span class="k">7</span>Contrato de depósito</a></li>
+    <li><a href="#m8"><span class="k">8</span>Juros e remuneração</a></li>
+    <li><a href="#m9"><span class="k">9</span>Meios de movimentação</a></li>
+    <li class="grp">Treino</li>
+    <li><a href="#calc"><span class="k">—</span>Calculadora</a></li>
+    <li><a href="#exerc"><span class="k">—</span>Exercícios resolvidos</a></li>
+    <li><a href="#cartoes"><span class="k">—</span>Flashcards</a></li>
+    <li><a href="#exame"><span class="k">—</span>Exame final</a></li>
+    <li class="grp">Apoio</li>
+    <li><a href="#errata"><span class="k">—</span>Correcções e actualizações</a></li>
+    <li><a href="#glos"><span class="k">—</span>Glossário</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<section class="mod" id="plano">
+  <div class="eyebrow">Curso: Produtos e Serviços Bancários</div>
+  <h2 class="mt">Todo o curso, reorganizado para se dominar em cinco dias</h2>
+  <p class="sub">Nove módulos, definições que se fixam, casos de balcão, 63 perguntas de autoavaliação, 25 exercícios de cálculo resolvidos e uma calculadora de juros. Marque cada módulo como concluído e a barra do topo acompanha o progresso.</p>
+
+  <div class="gist">
+    <h4>Como usar</h4>
+    <p>Leia o bloco <b>Em 30 segundos</b> de cada módulo, depois o corpo, depois resolva o quiz no fim. Só avance quando acertar pelo menos 5 das 7 perguntas. Ao fim do dia, passe pelos flashcards dos termos desse dia. No quinto dia faça o exame final.</p>
+  </div>
+
+  <div class="tw"><table>
+    <tr><th>Dia</th><th>Módulos</th><th>O que fica dominado</th><th>Treino</th></tr>
+    <tr><td class="num">1</td><td>1, 2, 3</td><td>Para que serve um banco, o que é a moeda, como o banco ganha dinheiro</td><td>Quizzes 1 a 3</td></tr>
+    <tr><td class="num">2</td><td>4, 5</td><td>Abertura de conta, titulares, quem pode e quem não pode movimentar</td><td>Quizzes 4 e 5 + casos de balcão</td></tr>
+    <tr><td class="num">3</td><td>6, 7</td><td>Sigilo bancário e todas as modalidades de depósito</td><td>Quizzes 6 e 7 + flashcards</td></tr>
+    <tr><td class="num">4</td><td>8</td><td>Juro simples, juro composto, IAC. O dia mais pesado</td><td>Os 25 exercícios + calculadora</td></tr>
+    <tr><td class="num">5</td><td>9 + revisão</td><td>Cartões, Multicaixa, TPA, ATM, transferências</td><td>Quiz 9 + exame final de 25 perguntas</td></tr>
+  </table></div>
+
+  <div class="warn">
+    <h4>Antes de começar</h4>
+    <p>O material de origem é de 2025 e cita a Lei n.º 13/05 das Instituições Financeiras, já revogada. Há também três incoerências numéricas nos exercícios originais. Tudo isso está corrigido ao longo do manual e reunido na secção <a href="#errata">Correcções e actualizações</a>. Se for a exame com base no PDF original, estude a versão corrigida e saiba justificar porquê.</p>
+  </div>
+</section>
+
+<!-- ============ M1 ============ -->
+<section class="mod" id="m1">
+  <div class="eyebrow">Módulo 1</div>
+  <h2 class="mt">O banco como agente económico</h2>
+  <p class="sub">Porque é que o banco existe, e que problema é que ele resolve.</p>
+
+  <div class="gist">
+    <h4>Em 30 segundos</h4>
+    <p>Há quem tenha dinheiro a mais e quem tenha dinheiro a menos. Os dois raramente se encontram, e quando se encontram não confiam um no outro. O banco põe-se no meio: recebe de quem tem, empresta a quem precisa, assume o risco e vive da diferença entre as duas taxas.</p>
+  </div>
+
+  <h3>A história em três passos</h3>
+  <p>O material começa com trocas directas, uma pele de animal por um machado. Vale a pena perceber porque é que esse sistema morreu, porque é dessa morte que nasce tudo o resto.</p>
+  <ul class="list">
+    <li><b>Só famílias.</b> Troca directa, bem por bem. Para funcionar, é preciso que eu queira exactamente o que o outro tem e ele queira exactamente o que eu tenho, ao mesmo tempo. Isto chama-se dupla coincidência de desejos e quase nunca acontece.</li>
+    <li><b>Aparecem as empresas.</b> A produção deixa de ser para consumo próprio e passa a ser para vender. Surge a necessidade de capital adiantado: comprar matéria-prima hoje para vender daqui a três meses.</li>
+    <li><b>Aparece o banco.</b> Um terceiro agente que capta o excedente de uns e o canaliza para a necessidade de outros. O dinheiro parado passa a financiar produção.</li>
+  </ul>
+
+  <figure>
+    <svg viewBox="0 0 700 240" role="img" aria-label="Circuito da intermediação financeira: agentes excedentários depositam no banco, o banco empresta a agentes deficitários">
+      <defs><marker id="ar1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+      <g style="color:var(--accent)">
+        <rect x="8" y="46" width="176" height="140" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="96" y="76" text-anchor="middle" font-family="Archivo,sans-serif" font-size="14" font-weight="700" fill="var(--ink)">Excedentários</text>
+        <text x="96" y="100" text-anchor="middle" font-family="Archivo,sans-serif" font-size="12.5" fill="var(--muted)">Famílias e empresas</text>
+        <text x="96" y="118" text-anchor="middle" font-family="Archivo,sans-serif" font-size="12.5" fill="var(--muted)">com dinheiro a mais</text>
+        <text x="96" y="150" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="var(--accent)">poupam</text>
+
+        <rect x="262" y="30" width="176" height="172" rx="12" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+        <text x="350" y="86" text-anchor="middle" font-family="Archivo,sans-serif" font-size="19" font-weight="800" fill="var(--ink)">O BANCO</text>
+        <text x="350" y="112" text-anchor="middle" font-family="Archivo,sans-serif" font-size="12.5" fill="var(--muted)">Intermediário financeiro</text>
+        <text x="350" y="140" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="var(--ink)">assume o risco</text>
+        <text x="350" y="160" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="var(--ink)">transforma prazos</text>
+
+        <rect x="516" y="46" width="176" height="140" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="604" y="76" text-anchor="middle" font-family="Archivo,sans-serif" font-size="14" font-weight="700" fill="var(--ink)">Deficitários</text>
+        <text x="604" y="100" text-anchor="middle" font-family="Archivo,sans-serif" font-size="12.5" fill="var(--muted)">Famílias e empresas</text>
+        <text x="604" y="118" text-anchor="middle" font-family="Archivo,sans-serif" font-size="12.5" fill="var(--muted)">com falta de dinheiro</text>
+        <text x="604" y="150" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="var(--accent)">investem</text>
+
+        <path d="M190 92 L254 92" stroke="currentColor" stroke-width="2" fill="none" marker-end="url(#ar1)"/>
+        <text x="222" y="82" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--ink)">depósito</text>
+        <path d="M254 142 L190 142" stroke="var(--gold)" stroke-width="2" fill="none" marker-end="url(#ar1)" style="color:var(--gold)"/>
+        <text x="222" y="162" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--gold)">juro passivo</text>
+
+        <path d="M446 92 L510 92" stroke="currentColor" stroke-width="2" fill="none" marker-end="url(#ar1)"/>
+        <text x="478" y="82" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--ink)">crédito</text>
+        <path d="M510 142 L446 142" stroke="var(--gold)" stroke-width="2" fill="none" marker-end="url(#ar1)" style="color:var(--gold)"/>
+        <text x="478" y="162" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--gold)">juro activo</text>
+
+        <text x="350" y="228" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12.5" font-weight="600" fill="var(--ink)">Juro activo &gt; Juro passivo = margem financeira</text>
+      </g>
+    </svg>
+    <figcaption>Guarde esta imagem. Tudo o que vem a seguir no curso é detalhe de uma das quatro setas.</figcaption>
+  </figure>
+
+  <h3>Os três agentes económicos</h3>
+  <div class="defs two">
+    <div class="def"><div class="t">Famílias</div><div class="d">Consomem e poupam. São o agente mais antigo, e ainda hoje a principal fonte de depósitos de um banco de retalho.</div></div>
+    <div class="def"><div class="t">Empresas</div><div class="d">Produzem. Precisam de capital antes de haver receita, o que as torna o principal cliente de crédito.</div></div>
+  </div>
+  <div class="def" style="margin-top:12px"><div class="t">Banco</div><div class="d">Agente que se intercala entre os outros dois. Não é um cofre: o seu negócio é usar o depósito de um para financiar o outro.</div><div class="ex">Repare na palavra do material original: o banco <i>canaliza dinheiro parado para a produção</i>. Dinheiro parado não produz nada; o banco é quem o põe a andar.</div></div>
+
+  <div class="case"><div class="hd">Para perceber, não para decorar</div><div class="bd">
+    <p>Uma quitandeira no Prenda poupa 20.000 Kz por mês e guarda-os em casa. Um serralheiro no Cazenga precisa de 500.000 Kz para comprar uma máquina que lhe duplica a produção. Os dois nunca se encontram, e se se encontrassem a quitandeira não teria como avaliar se ele paga.</p>
+    <div class="ans"><b>O que o banco faz:</b> junta a poupança de 25 quitandeiras, avalia o risco do serralheiro, empresta-lhe os 500.000 Kz, e garante a cada quitandeira que ela levanta o seu dinheiro quando quiser. Isto é transformação de prazos e de risco, e é por isso que o banco é remunerado.</div>
+  </div></div>
+
+  <div class="quiz" data-quiz="m1"></div>
+  <div class="done-row"><button class="btn btn-primary" data-done="m1">Marcar módulo 1 como concluído</button></div>
+</section>
+
+<!-- ============ M2 ============ -->
+<section class="mod" id="m2">
+  <div class="eyebrow">Módulo 2</div>
+  <h2 class="mt">A moeda, suporte do sistema bancário</h2>
+  <p class="sub">O que a moeda faz, que qualidades precisa de ter e como se reconhece uma nota verdadeira.</p>
+
+  <div class="gist">
+    <h4>Em 30 segundos</h4>
+    <p>A moeda é intermediário das trocas: serve para comprar qualquer coisa, pelo que resolve a dupla coincidência de desejos. Para servir, precisa de oito qualidades. E porque vale dinheiro, é falsificada, pelo que a nota traz elementos de segurança que o bancário tem de saber verificar.</p>
+  </div>
+
+  <h3>As funções da moeda</h3>
+  <ul class="list">
+    <li><b>Intermediário das trocas.</b> É a função que o material destaca. Deixo de precisar de encontrar quem queira o que tenho; vendo por moeda e compro o que quero.</li>
+    <li><b>Medida de valor.</b> Permite exprimir tudo numa única unidade e comparar: uma mota vale 34 sacos de cimento porque ambos têm preço em kwanzas.</li>
+    <li><b>Reserva de valor.</b> Permite transportar poder de compra para o futuro. É a função que a inflação ataca, e é por isso que a estabilidade de valor aparece na lista de características.</li>
+  </ul>
+
+  <h3>As oito características, agrupadas aos pares</h3>
+  <p>A lista do material tem oito itens soltos e é difícil de decorar. Em pares, cola à primeira: cada par responde a uma pergunta diferente sobre a moeda.</p>
+
+  <div class="tw"><table>
+    <tr><th>Pergunta</th><th>Par</th><th>O que significa</th></tr>
+    <tr><td><b>Quanto vale?</b></td><td>Valor<br>Divisibilidade</td><td>Tem de ser procurada e aceite por todos. E tem de se partir em partes menores sem perder valor: 1.000 Kz valem duas notas de 500.</td></tr>
+    <tr><td><b>Aguenta o uso?</b></td><td>Durabilidade<br>Portabilidade</td><td>Circula anos a fio sem se deteriorar, e cabe no bolso para pagamentos do dia-a-dia.</td></tr>
+    <tr><td><b>É sempre igual?</b></td><td>Homogeneidade<br>Estabilidade de valor</td><td>Todas as notas de 500 são do mesmo material e da mesma qualidade, e 500 Kz hoje devem valer aproximadamente 500 Kz amanhã.</td></tr>
+    <tr><td><b>Reconhece-se?</b></td><td>Identificabilidade<br>Cunhabilidade</td><td>Identifica-se sem ensaios complexos, e traz um cunho oficial que atesta ser numerário e indica o valor.</td></tr>
+  </table></div>
+
+  <div class="warn">
+    <h4>Pergunta de exame que separa os dois</h4>
+    <p><b>Divisibilidade</b> é poder partir sem perder valor. <b>Homogeneidade</b> é todas as unidades serem idênticas entre si. Troca-se uma pela outra em quase todos os testes.</p>
+  </div>
+
+  <h3>Elementos de segurança de uma nota</h3>
+  <p>Os onze elementos que o material apresenta sobre o kwanza organizam-se por <b>como</b> se verificam. Esta é a ordem útil ao balcão, da mais rápida para a mais lenta.</p>
+
+  <figure>
+    <svg viewBox="0 0 700 330" role="img" aria-label="Esquema dos elementos de segurança de uma nota, agrupados por tacto, luz e equipamento">
+      <rect x="0" y="0" width="700" height="330" fill="none"/>
+      <rect x="20" y="20" width="200" height="290" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+      <rect x="250" y="20" width="200" height="290" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+      <rect x="480" y="20" width="200" height="290" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+
+      <rect x="20" y="20" width="200" height="40" rx="12" fill="var(--accent-soft)"/>
+      <rect x="20" y="48" width="200" height="12" fill="var(--accent-soft)"/>
+      <rect x="250" y="20" width="200" height="40" rx="12" fill="var(--gold-soft)"/>
+      <rect x="250" y="48" width="200" height="12" fill="var(--gold-soft)"/>
+      <rect x="480" y="20" width="200" height="40" rx="12" fill="var(--surface-2)"/>
+      <rect x="480" y="48" width="200" height="12" fill="var(--surface-2)"/>
+
+      <text x="120" y="46" text-anchor="middle" font-family="Archivo,sans-serif" font-size="14" font-weight="800" fill="var(--ink)">1. AO TACTO</text>
+      <text x="350" y="46" text-anchor="middle" font-family="Archivo,sans-serif" font-size="14" font-weight="800" fill="var(--ink)">2. CONTRA A LUZ</text>
+      <text x="580" y="46" text-anchor="middle" font-family="Archivo,sans-serif" font-size="14" font-weight="800" fill="var(--ink)">3. COM EQUIPAMENTO</text>
+
+      <text x="120" y="80" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--muted)">imediato, sem nada</text>
+      <text x="350" y="80" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--muted)">levantar a nota</text>
+      <text x="580" y="80" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--muted)">lupa ou luz UV</text>
+
+      <g font-family="Archivo,sans-serif" font-size="13" fill="var(--ink)">
+        <text x="40" y="118" font-weight="700">Impressão a talhe doce</text>
+        <text x="40" y="136" font-size="11.5" fill="var(--muted)">Relevo sensível ao dedo</text>
+        <text x="40" y="166" font-weight="700">Faixa sobreposta</text>
+        <text x="40" y="184" font-size="11.5" fill="var(--muted)">Faixa vertical que encaixa</text>
+        <text x="40" y="200" font-size="11.5" fill="var(--muted)">frente com verso</text>
+        <text x="40" y="230" font-weight="700">OVI</text>
+        <text x="40" y="248" font-size="11.5" fill="var(--muted)">Tinta que muda de cor</text>
+        <text x="40" y="264" font-size="11.5" fill="var(--muted)">conforme o ângulo</text>
+
+        <text x="270" y="118" font-weight="700">Marca de água</text>
+        <text x="270" y="136" font-size="11.5" fill="var(--muted)">Incorporada no papel</text>
+        <text x="270" y="166" font-weight="700">Fio de segurança</text>
+        <text x="270" y="184" font-size="11.5" fill="var(--muted)">Na massa do papel</text>
+        <text x="270" y="214" font-weight="700">Registo perfeito</text>
+        <text x="270" y="232" font-size="11.5" fill="var(--muted)">Desenho dos dois lados</text>
+        <text x="270" y="248" font-size="11.5" fill="var(--muted)">que fecha a sigla BNA</text>
+        <text x="270" y="278" font-weight="700">Imagem latente</text>
+
+        <text x="500" y="118" font-weight="700">Microimpressão</text>
+        <text x="500" y="136" font-size="11.5" fill="var(--muted)">Só visível com lupa</text>
+        <text x="500" y="166" font-weight="700">Valor em tinta invisível</text>
+        <text x="500" y="184" font-size="11.5" fill="var(--muted)">Aparece sob luz UV</text>
+        <text x="500" y="214" font-weight="700">Numeração fluorescente</text>
+        <text x="500" y="232" font-size="11.5" fill="var(--muted)">Tinta negra que brilha UV</text>
+        <text x="500" y="262" font-weight="700">Impressão de fundo</text>
+        <text x="500" y="280" font-size="11.5" fill="var(--muted)">Ornamentos em arco-íris</text>
+      </g>
+    </svg>
+    <figcaption>Regra de balcão: nenhuma verificação isolada decide. Uma nota verdadeira passa nas três categorias.</figcaption>
+  </figure>
+
+  <div class="warn">
+    <h4>O ponto que mais cai</h4>
+    <p>A microimpressão não pode ser reproduzida por nenhum scanner ou fotocopiadora a cores. É por isso que resiste melhor à falsificação caseira do que o desenho ou a cor da nota.</p>
+  </div>
+
+  <div class="quiz" data-quiz="m2"></div>
+  <div class="done-row"><button class="btn btn-primary" data-done="m2">Marcar módulo 2 como concluído</button></div>
+</section>
+
+<!-- ============ M3 ============ -->
+<section class="mod" id="m3">
+  <div class="eyebrow">Módulo 3</div>
+  <h2 class="mt">As operações bancárias gerais</h2>
+  <p class="sub">Operações passivas, operações activas e o esquema que explica como o banco ganha dinheiro.</p>
+
+  <div class="gist">
+    <h4>Em 30 segundos</h4>
+    <p>Tudo o que um banco faz cabe em duas caixas. <b>Intermediação financeira</b>: capta recursos (operações passivas, paga juro) e concede crédito (operações activas, recebe juro). <b>Prestação de serviços</b>: faz coisas para o cliente e cobra comissões. Margem financeira = juros activos menos juros passivos. Produto bancário = margem financeira mais comissões.</p>
+  </div>
+
+  <div class="warn">
+    <h4>A troca de nomes que toda a gente faz</h4>
+    <p><b>Passiva</b> é quando o banco recebe o seu dinheiro. <b>Activa</b> é quando o banco lhe dá dinheiro. Parece ao contrário do senso comum, e é por isso que falha. A lógica é contabilística: o depósito é uma dívida do banco para consigo, logo passivo; o crédito é um direito do banco sobre si, logo activo. Pense sempre pelo balanço do banco, nunca pelo seu.</p>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 700 400" role="img" aria-label="Árvore da divisão dos serviços bancários: intermediação financeira e prestação de serviços, até à margem financeira e ao produto bancário">
+      <g font-family="Archivo,sans-serif">
+        <rect x="250" y="8" width="200" height="40" rx="9" fill="var(--accent)" stroke="var(--accent)"/>
+        <text x="350" y="33" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">SERVIÇOS BANCÁRIOS</text>
+        <path d="M350 48 L350 66 M160 66 L560 66 M160 66 L160 84 M560 66 L560 84" stroke="var(--line)" stroke-width="2" fill="none"/>
+
+        <rect x="42" y="84" width="236" height="38" rx="8" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.6"/>
+        <text x="160" y="108" text-anchor="middle" font-size="13.5" font-weight="700" fill="var(--ink)">Intermediação financeira</text>
+        <rect x="442" y="84" width="236" height="38" rx="8" fill="var(--surface)" stroke="var(--gold)" stroke-width="1.6"/>
+        <text x="560" y="108" text-anchor="middle" font-size="13.5" font-weight="700" fill="var(--ink)">Prestação de serviços</text>
+
+        <path d="M160 122 L160 140 M90 140 L230 140 M90 140 L90 158 M230 140 L230 158" stroke="var(--line)" stroke-width="2" fill="none"/>
+        <path d="M560 122 L560 158" stroke="var(--line)" stroke-width="2" fill="none"/>
+
+        <rect x="20" y="158" width="140" height="34" rx="7" fill="var(--surface-2)" stroke="var(--line)"/>
+        <text x="90" y="180" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--ink)">Captação recursos</text>
+        <rect x="160" y="158" width="140" height="34" rx="7" fill="var(--surface-2)" stroke="var(--line)"/>
+        <text x="230" y="180" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--ink)">Concessão crédito</text>
+        <rect x="490" y="158" width="140" height="34" rx="7" fill="var(--gold-soft)" stroke="var(--line)"/>
+        <text x="560" y="180" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--ink)">Comissões (SB)</text>
+
+        <path d="M90 192 L90 210 M230 192 L230 210" stroke="var(--line)" stroke-width="2" fill="none"/>
+        <rect x="20" y="210" width="140" height="34" rx="7" fill="var(--accent-soft)" stroke="var(--accent)"/>
+        <text x="90" y="232" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--ink)">Operações passivas</text>
+        <rect x="160" y="210" width="140" height="34" rx="7" fill="var(--accent-soft)" stroke="var(--accent)"/>
+        <text x="230" y="232" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--ink)">Operações activas</text>
+
+        <path d="M90 244 L90 262 M230 244 L230 262" stroke="var(--line)" stroke-width="2" fill="none"/>
+        <rect x="20" y="262" width="140" height="34" rx="7" fill="var(--surface)" stroke="var(--line)"/>
+        <text x="90" y="284" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--ink)">Juros passivos (JP)</text>
+        <rect x="160" y="262" width="140" height="34" rx="7" fill="var(--surface)" stroke="var(--line)"/>
+        <text x="230" y="284" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--ink)">Juros activos (JA)</text>
+
+        <path d="M90 296 L90 314 L230 314 L230 296 M160 314 L160 330" stroke="var(--line)" stroke-width="2" fill="none"/>
+        <rect x="52" y="330" width="216" height="40" rx="9" fill="var(--accent)" stroke="var(--accent)"/>
+        <text x="160" y="349" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">MARGEM FINANCEIRA</text>
+        <text x="160" y="364" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12.5" fill="#fff">MF = JA − JP</text>
+
+        <path d="M268 350 L330 350 M560 192 L560 350 L442 350" stroke="var(--line)" stroke-width="2" fill="none" stroke-dasharray="4 4"/>
+        <rect x="330" y="330" width="200" height="40" rx="9" fill="var(--gold)" stroke="var(--gold)"/>
+        <text x="430" y="349" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">PRODUTO BANCÁRIO</text>
+        <text x="430" y="364" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12.5" fill="#fff">PB = MF + SB</text>
+      </g>
+    </svg>
+    <figcaption>O esquema do material original, desenhado por inteiro. Saiba reproduzi-lo de memória: cobre meia dúzia de perguntas de exame.</figcaption>
+  </figure>
+
+  <div class="defs two">
+    <div class="def"><div class="t">Operações passivas</div><div class="d">O banco capta recursos de quem tem excedente. Gera <b>juros passivos</b>, que são custo.</div><div class="ex">Depósito à ordem, depósito a prazo, depósito com pré-aviso.</div></div>
+    <div class="def"><div class="t">Operações activas</div><div class="d">O banco concede crédito a quem tem escassez. Gera <b>juros activos</b>, que são proveito.</div><div class="ex">Empréstimo, descoberto autorizado, cartão de crédito, leasing.</div></div>
+    <div class="def"><div class="t">Margem financeira (MF)</div><div class="d">O que sobra da intermediação: <span class="num">JA − JP</span>. É o lucro bruto do negócio de emprestar.</div></div>
+    <div class="def"><div class="t">Produto bancário (PB)</div><div class="d">Receita total da actividade: <span class="num">MF + SB</span>, em que SB são os serviços cobrados por comissão.</div><div class="ex">Transferências, manutenção de conta, emissão de cartão, garantias bancárias, cobranças.</div></div>
+  </div>
+
+  <div class="case"><div class="hd">Caso numérico</div><div class="bd">
+    <p>Num ano, um banco pagou 4.200 milhões de Kz de juros a depositantes e recebeu 11.800 milhões de Kz de juros de mutuários. Cobrou ainda 1.500 milhões de Kz em comissões.</p>
+    <div class="ans"><b>MF = 11.800 − 4.200 = 7.600 milhões Kz. PB = 7.600 + 1.500 = 9.100 milhões Kz.</b> Note que as comissões não entram na margem financeira: entram só no produto bancário.</div>
+  </div></div>
+
+  <div class="quiz" data-quiz="m3"></div>
+  <div class="done-row"><button class="btn btn-primary" data-done="m3">Marcar módulo 3 como concluído</button></div>
+</section>
+
+<!-- ============ M4 ============ -->
+<section class="mod" id="m4">
+  <div class="eyebrow">Módulo 4</div>
+  <h2 class="mt">A conta bancária e os seus intervenientes</h2>
+  <p class="sub">O que nasce quando um cliente diz "quero abrir uma conta".</p>
+
+  <div class="gist">
+    <h4>Em 30 segundos</h4>
+    <p>A conta bancária nasce ao mesmo tempo que o contrato de depósito: são inseparáveis. O documento que fixa as regras é a ficha de assinatura, e nela definem-se quatro coisas: quem são os titulares, que tipo de conta é, que condições especiais existem e quais são as assinaturas válidas.</p>
+  </div>
+
+  <h3>Os termos, sem confusão</h3>
+  <div class="defs">
+    <div class="def"><div class="t">Conta</div><div class="d">Em termos contabilísticos, é o conjunto de elementos patrimoniais com características comuns, expresso em unidades de valor.</div></div>
+    <div class="def"><div class="t">Conta-cliente</div><div class="d">É a expressão contabilística do depósito na escrita do banco. Traduz a relação banco-cliente através de lançamentos a débito e a crédito.</div><div class="ex">Dito de forma simples: é a página do livro do banco onde está escrito quanto é que o banco lhe deve a si.</div></div>
+    <div class="def"><div class="t">Cliente / depositante</div><div class="d">Pessoa que firma o contrato e confia ao banco a guarda dos seus valores monetários. Pode ser <b>particular</b> (pessoa singular) ou <b>empresa</b> (pessoa colectiva).</div></div>
+    <div class="def"><div class="t">Banco / depositário</div><div class="d">A instituição que recebe e guarda. Fica responsável pelos bens que lhe foram entregues.</div></div>
+  </div>
+
+  <div class="warn">
+    <h4>Débito e crédito vistos do lado certo</h4>
+    <p>Na conta-cliente, <b>crédito</b> é entrada de dinheiro para o cliente e <b>débito</b> é saída. É por isso que a movimentação a débito é a que exige assinaturas: é a que tira dinheiro. Receber dinheiro nunca exige autorização; dar é que exige.</p>
+  </div>
+
+  <h3>A ficha de assinatura</h3>
+  <p>É o documento central do módulo. Nela regista-se:</p>
+  <ul class="list">
+    <li><b>Os titulares da conta.</b> Quem é dono do saldo.</li>
+    <li><b>O tipo de conta.</b> Singular ou colectiva.</li>
+    <li><b>As condições especiais de movimentação.</b> Limites, autorizações, representantes.</li>
+    <li><b>Os espécimes de assinatura</b> válidos, de acordo com o tipo de conta e a modalidade de movimentação.</li>
+  </ul>
+
+  <h3>Vantagens do contrato, para cada lado</h3>
+  <div class="defs two">
+    <div class="def"><div class="t">Para o banco</div><div class="d">Captação de recursos. Sem depósitos não há matéria-prima para conceder crédito.</div></div>
+    <div class="def"><div class="t">Para o cliente</div><div class="d">Segurança, facilidade de movimentação e proveitos (os juros).</div></div>
+  </div>
+
+  <h3>Modalidades de movimentação a débito</h3>
+  <div class="tw"><table>
+    <tr><th>Tipo de conta</th><th>Modalidade</th><th>Quem tem de assinar</th><th>Como fixar</th></tr>
+    <tr><td><b>Singular</b><br><span style="color:var(--muted);font-size:13px">1 titular</span></td><td>Única</td><td>O titular</td><td>Um dono, uma assinatura</td></tr>
+    <tr><td rowspan="3"><b>Colectiva</b><br><span style="color:var(--muted);font-size:13px">2 ou mais titulares</span></td><td>Solidária</td><td>Qualquer um dos titulares, sozinho</td><td><b>S</b>olidária = <b>S</b>ozinho basta</td></tr>
+    <tr><td>Conjunta</td><td>Todos os titulares</td><td>Con<b>junta</b> = todos <b>juntos</b></td></tr>
+    <tr><td>Mista</td><td>Uma parte dos titulares, conforme o acordado na abertura</td><td>Mistura das duas: regra feita à medida</td></tr>
+  </table></div>
+
+  <div class="case"><div class="hd">Caso de balcão</div><div class="bd">
+    <p>Uma conta tem três titulares: a Sra. Kiala, o Sr. Mendes e a Sra. Tchissola. Na ficha ficou registado que são precisas duas assinaturas quaisquer. Hoje aparecem o Sr. Mendes e a Sra. Tchissola a querer levantar 900.000 Kz.</p>
+    <div class="ans"><b>Pagar.</b> A conta é colectiva mista, e duas assinaturas de entre os três satisfazem a regra registada na ficha. Se a conta fosse conjunta, faltaria a Sra. Kiala e não se pagava. Se fosse solidária, bastava um deles.</div>
+  </div></div>
+
+  <h3>Óbito de um titular</h3>
+  <p>É a parte do módulo com mais perguntas de exame. A regra depende do tipo de conta.</p>
+  <div class="tw"><table>
+    <tr><th>Tipo de conta</th><th>O que acontece ao morrer um titular</th></tr>
+    <tr><td><b>Singular</b></td><td>Bloqueia a <b>totalidade</b> do saldo à data do óbito.</td></tr>
+    <tr><td><b>Colectiva solidária</b></td><td>Pode bloquear-se <b>apenas a parte</b> correspondente ao titular falecido.</td></tr>
+    <tr><td><b>Colectiva conjunta ou mista</b></td><td>Bloqueia a <b>totalidade</b> do saldo à data do óbito.</td></tr>
+  </table></div>
+  <p>O bloqueio mantém-se até à apresentação da <b>escritura de habilitação de herdeiros</b>. É esse o documento que levanta o bloqueio, e não a certidão de óbito.</p>
+
+  <div class="warn">
+    <h4>A excepção que se esquece</h4>
+    <p>A solidária é a única que escapa ao bloqueio total. Faz sentido: na solidária cada titular já podia, em vida, movimentar sozinho a totalidade, pelo que o banco só precisa de proteger a quota do falecido para os herdeiros.</p>
+  </div>
+
+  <div class="quiz" data-quiz="m4"></div>
+  <div class="done-row"><button class="btn btn-primary" data-done="m4">Marcar módulo 4 como concluído</button></div>
+</section>
+
+<!-- ============ M5 ============ -->
+<section class="mod" id="m5">
+  <div class="eyebrow">Módulo 5</div>
+  <h2 class="mt">Personalidade, capacidade e restrições</h2>
+  <p class="sub">Quem pode ser titular, quem pode assinar, e porque é que não é a mesma pergunta.</p>
+
+  <div class="gist">
+    <h4>Em 30 segundos</h4>
+    <p>Duas palavras parecidas, dois significados diferentes. <b>Personalidade jurídica</b> é poder <i>ser</i> titular de direitos. <b>Capacidade de exercício</b> é poder <i>exercê-los</i> sozinho. Quase todas as pessoas do módulo têm personalidade e, por isso, podem ser titulares de conta; o que lhes falta é capacidade, e por isso precisam de outra assinatura ao lado.</p>
+  </div>
+
+  <div class="defs two">
+    <div class="def"><div class="t">Personalidade jurídica</div><div class="d">Possibilidade de ser sujeito de direitos ou obrigações. Pessoas singulares adquirem-na com o nascimento completo com vida; pessoas colectivas, com a constituição e o registo comercial.</div></div>
+    <div class="def"><div class="t">Capacidade de exercício</div><div class="d">Possibilidade de exercer por si os seus direitos. Pode ser suprimida ou restringida por lei ou por decisão judicial.</div></div>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 700 300" role="img" aria-label="Árvore de decisão: quem assina a abertura e a movimentação a débito">
+      <g font-family="Archivo,sans-serif">
+        <rect x="200" y="6" width="300" height="42" rx="9" fill="var(--accent)" stroke="var(--accent)"/>
+        <text x="350" y="25" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Tem personalidade jurídica?</text>
+        <text x="350" y="40" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="#fff">nasceu com vida / está registada</text>
+
+        <path d="M350 48 L350 64 M130 64 L560 64 M130 64 L130 80 M560 64 L560 80" stroke="var(--line)" stroke-width="2" fill="none"/>
+        <text x="240" y="60" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--muted)">sim</text>
+        <text x="470" y="60" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--muted)">não</text>
+
+        <rect x="440" y="80" width="240" height="38" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+        <text x="560" y="104" text-anchor="middle" font-size="12.5" fill="var(--ink)">Não pode sequer ser titular</text>
+
+        <rect x="10" y="80" width="240" height="38" rx="8" fill="var(--accent-soft)" stroke="var(--accent)"/>
+        <text x="130" y="104" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--ink)">PODE SER TITULAR</text>
+
+        <path d="M130 118 L130 136" stroke="var(--line)" stroke-width="2" fill="none"/>
+        <rect x="10" y="136" width="240" height="38" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+        <text x="130" y="160" text-anchor="middle" font-size="12.5" fill="var(--ink)">Tem capacidade de exercício?</text>
+
+        <path d="M130 174 L130 190 M60 190 L300 190 M60 190 L60 206 M300 190 L300 206" stroke="var(--line)" stroke-width="2" fill="none"/>
+        <text x="90" y="186" font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--muted)">sim</text>
+        <text x="258" y="186" font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--muted)">não</text>
+
+        <rect x="0" y="206" width="124" height="60" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+        <text x="62" y="230" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">Assina sozinho</text>
+        <text x="62" y="250" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10.5" fill="var(--muted)">titular maior e capaz</text>
+
+        <rect x="150" y="206" width="540" height="84" rx="8" fill="var(--gold-soft)" stroke="var(--gold)"/>
+        <text x="420" y="228" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--ink)">É titular, mas a débito assina também o representante</text>
+        <g font-family="IBM Plex Mono,monospace" font-size="11.5" fill="var(--ink)">
+          <text x="175" y="252">Menor → responsável legal</text>
+          <text x="420" y="252">Interdito → tutor</text>
+          <text x="620" y="252" text-anchor="middle">Inabilitado → curador</text>
+          <text x="175" y="274">Analfabeto → assinatura a rogo reconhecida, ou impressão digital visada por 2 funcionários</text>
+        </g>
+      </g>
+    </svg>
+    <figcaption>Se decorar só esta árvore, responde correctamente a quase todas as perguntas sobre restrições.</figcaption>
+  </figure>
+
+  <h3>Incapacidades das pessoas singulares</h3>
+  <div class="defs">
+    <div class="def"><div class="t">Menoridade</div><div class="d">É menor quem não tenha completado 18 anos. O menor <b>pode ser titular</b>, porque goza de personalidade jurídica, mas na ficha de assinatura tem de constar a assinatura do responsável legal.</div><div class="ex">Excepções previstas na lei, tal como constam do material: emancipação pelo casamento (16 anos para rapaz, 14 para rapariga) e menor trabalhador (14 anos). Confirme sempre a redacção actual do Código Civil e do Código do Trabalho antes de aplicar.</div></div>
+    <div class="def"><div class="t">Interdição</div><div class="d">Capacidade de exercício <b>judicialmente suprimida ou restringida</b> por anomalia psíquica, surdez, mudez, cegueira e situações equiparadas. Incapacidade <b>total</b>. Pode ser titular; a abertura e a movimentação a débito exigem a assinatura do <b>tutor</b>.</div></div>
+    <div class="def"><div class="t">Inabilitação</div><div class="d">Incapacidade <b>parcial</b>, por decisão judicial (art.º 152.º do Código Civil). A pessoa não pode, por si só, realizar determinados actos jurídicos, carecendo da autorização de um <b>curador</b>. Pode ser titular; abertura e débito exigem a assinatura do curador.</div></div>
+    <div class="def"><div class="t">Analfabetismo</div><div class="d">Não é incapacidade jurídica. A pessoa <b>tem capacidade</b> e <b>tem personalidade</b>; apenas não sabe ler nem escrever. Pode ser titular e movimenta por uma de duas vias.</div><div class="ex">1) Assinatura de outrem prestada a rogo e reconhecida no notário. 2) Impressões digitais visadas por dois funcionários bancários.</div></div>
+  </div>
+
+  <div class="warn">
+    <h4>A distinção decisiva: interdito vs inabilitado</h4>
+    <p><b>Interdito</b>: total, tem <b>tutor</b>. <b>Inabilitado</b>: parcial, tem <b>curador</b>. Associe pelo tamanho da palavra ao tamanho da incapacidade: inabilitado é a palavra maior mas a incapacidade menor. E lembre que o analfabeto não pertence a esta lista: é a pergunta-armadilha clássica do módulo.</p>
+  </div>
+
+  <h3>Incapacidades das pessoas colectivas</h3>
+  <div class="defs two">
+    <div class="def"><div class="t">Insolvência</div><div class="d">Situação em que o passivo da empresa é superior ao activo, ou em que ela está impossibilitada de cumprir as suas obrigações vencidas. É um <b>estado de facto</b> da empresa.</div></div>
+    <div class="def"><div class="t">Falência</div><div class="d">É o <b>processo judicial</b> que se segue ao reconhecimento da insolvência, e que leva à liquidação do património para pagar aos credores.</div></div>
+  </div>
+  <div class="warn">
+    <h4>Nota sobre o material original</h4>
+    <p>O PDF define insolvência como impossibilidade de pagar de imediato e falência como incapacidade de honrar compromissos a curto prazo, o que torna as duas quase idênticas e não permite distingui-las. A distinção útil é a de cima: insolvência é o <b>estado</b>, falência é o <b>processo</b> que o estado desencadeia. Se o seu avaliador exigir a redacção do PDF, saiba as duas versões.</p>
+  </div>
+
+  <div class="case"><div class="hd">Caso de balcão</div><div class="bd">
+    <p>Aparece ao balcão a Sra. Madalena, 63 anos, que não sabe ler nem escrever, acompanhada do filho. Quer abrir conta para receber a pensão. O filho pede para assinar ele os documentos, porque a mãe "não tem capacidade".</p>
+    <div class="ans"><b>Corrigir o filho e abrir a conta em nome da mãe.</b> A Sra. Madalena tem personalidade e capacidade jurídicas plenas. Movimentará por impressão digital visada por dois funcionários do banco, ou por assinatura a rogo reconhecida no notário. O filho não entra como representante legal, porque não há incapacidade nenhuma a suprir.</div>
+  </div></div>
+
+  <div class="quiz" data-quiz="m5"></div>
+  <div class="done-row"><button class="btn btn-primary" data-done="m5">Marcar módulo 5 como concluído</button></div>
+</section>
+
+<!-- ============ M6 ============ -->
+<section class="mod" id="m6">
+  <div class="eyebrow">Módulo 6</div>
+  <h2 class="mt">O dever de segredo e o sigilo bancário</h2>
+  <p class="sub">O que não se diz, a quem se pode dizer, e durante quanto tempo.</p>
+
+  <div class="gist">
+    <h4>Em 30 segundos</h4>
+    <p>Tudo o que respeite à vida da instituição e às relações desta com os clientes é segredo. Abrange nomes, contas, movimentos e demais operações. Obriga administradores, fiscalização, empregados e até prestadores ocasionais. <b>Não cessa com o fim das funções.</b> Levanta-se em cinco casos, e só nesses.</p>
+  </div>
+
+  <div class="def"><div class="t">Sigilo bancário</div><div class="d">Instituto jurídico que disciplina a relação entre os bancos e os seus clientes, impondo o dever de segredo como uma das obrigações típicas dessa relação. Traduz-se na observância, pelos funcionários, de séria discrição, por estarem obrigados ao segredo profissional.</div></div>
+
+  <h3>Quem está obrigado</h3>
+  <ul class="list">
+    <li>Os membros dos órgãos de administração dos bancos.</li>
+    <li>Os membros dos órgãos de fiscalização.</li>
+    <li>Os empregados.</li>
+    <li>Outras pessoas que prestem serviços à instituição, a título <b>permanente ou ocasional</b>.</li>
+  </ul>
+  <p>Note a última: o técnico de informática contratado por um dia, o auditor externo, o estagiário. A obrigação apanha-os a todos.</p>
+
+  <h3>O que está coberto</h3>
+  <div class="tw"><table>
+    <tr><th>Abrangido</th><th>Exemplo concreto</th></tr>
+    <tr><td>Os nomes dos clientes</td><td>Confirmar a um terceiro que "o Sr. X é nosso cliente" já é violação.</td></tr>
+    <tr><td>As suas contas</td><td>Números, saldos, tipo de conta.</td></tr>
+    <tr><td>Os respectivos movimentos</td><td>Levantamentos, transferências, origem dos valores.</td></tr>
+    <tr><td>E demais operações</td><td>Créditos pedidos, garantias prestadas, operações cambiais.</td></tr>
+  </table></div>
+
+  <div class="warn">
+    <h4>A regra que mais cai em exame</h4>
+    <p><b>O dever de segredo não cessa com o termo das funções ou dos serviços.</b> Quem sai do banco continua obrigado, para sempre. Uma pergunta frequente é formulada assim: "um ex-funcionário pode divulgar?" A resposta é não.</p>
+  </div>
+
+  <h3>As cinco excepções</h3>
+  <p>Os factos podem ser revelados apenas nestes casos. Fixe-os pela ordem em que aparecem: um é do cliente, três são supervisores, um é judicial.</p>
+  <div class="tw"><table>
+    <tr><th class="num">#</th><th>A quem</th><th>Condição</th></tr>
+    <tr><td class="num">1</td><td>Ao próprio, por sua ordem</td><td>Mediante <b>autorização do cliente, transmitida por escrito</b> à instituição. Verbal não serve.</td></tr>
+    <tr><td class="num">2</td><td>Ao BNA</td><td>No âmbito das suas atribuições</td></tr>
+    <tr><td class="num">3</td><td>À Comissão de Mercado de Capitais</td><td>No âmbito das suas atribuições</td></tr>
+    <tr><td class="num">4</td><td>À Agência de supervisão de seguros</td><td>No âmbito das suas atribuições</td></tr>
+    <tr><td class="num">5</td><td>Ao tribunal</td><td>Para instrução de processos, mediante <b>despacho do Juiz de Direito ou do Magistrado do Ministério Público</b></td></tr>
+  </table></div>
+
+  <div class="case"><div class="hd">Caso de balcão</div><div class="bd">
+    <p>Telefona um senhor que se identifica como advogado e diz estar a tratar de um divórcio. Pede o saldo da conta do marido da sua cliente, e promete enviar depois a procuração por e-mail.</p>
+    <div class="ans"><b>Não revelar nada, nem sequer confirmar que a pessoa é cliente.</b> Só duas vias desbloqueavam este pedido: autorização escrita do próprio titular, ou despacho do juiz ou do Ministério Público. Uma promessa de procuração, por telefone, não é nenhuma das duas.</div>
+  </div></div>
+
+  <div class="quiz" data-quiz="m6"></div>
+  <div class="done-row"><button class="btn btn-primary" data-done="m6">Marcar módulo 6 como concluído</button></div>
+</section>
+
+<!-- ============ M7 ============ -->
+<section class="mod" id="m7">
+  <div class="eyebrow">Módulo 7</div>
+  <h2 class="mt">O contrato de depósito e as suas modalidades</h2>
+  <p class="sub">Da liberdade contratual às três modalidades e às duas formas de depósito a prazo.</p>
+
+  <div class="gist">
+    <h4>Em 30 segundos</h4>
+    <p>O depósito é o contrato entre o <b>depositante</b> (cliente) e o <b>depositário</b> (banco). Em Angola, só instituições de crédito registadas no BNA podem receber depósitos. Há três modalidades, e a diferença entre elas é uma só: <b>quando é que o cliente pode levantar</b>. Quanto mais o cliente abdica de levantar, mais o banco lhe paga.</p>
+  </div>
+
+  <h3>O princípio da liberdade contratual</h3>
+  <ul class="list">
+    <li>Dentro dos limites da lei, cada instituição de crédito define livremente as características e condições dos depósitos que comercializa. É por isso que as taxas variam de banco para banco.</li>
+    <li>Instituição e cliente têm de estar de acordo não só quanto ao conteúdo do contrato, mas também quanto à própria <b>decisão de contratar</b>. Ou seja: o banco pode recusar abrir conta, e o cliente pode recusar as condições.</li>
+  </ul>
+
+  <h3>As três modalidades</h3>
+  <div class="tw"><table>
+    <tr><th>Modalidade</th><th>Regra de levantamento</th><th>Remuneração</th><th>Para quem</th></tr>
+    <tr><td><b>À ordem (DO)</b></td><td>O banco é obrigado a restituir <b>a qualquer momento</b></td><td>Nula ou muito baixa</td><td>Quem precisa do dinheiro disponível todos os dias</td></tr>
+    <tr><td><b>A prazo (DP)</b></td><td>O cliente compromete-se a <b>não levantar antes do vencimento</b>; o banco dispõe do capital por período determinado</td><td>A mais alta</td><td>Quem tem excedente que não vai usar</td></tr>
+    <tr><td><b>Com pré-aviso</b></td><td>O cliente compromete-se a <b>avisar previamente, por escrito</b>, antes de levantar</td><td>Intermédia</td><td>Quem quer render mais sem fixar uma data</td></tr>
+  </table></div>
+
+  <h3>Porque é que o cliente escolhe o depósito à ordem</h3>
+  <ul class="list">
+    <li><b>Segurança.</b> O dinheiro deixa de estar em casa.</li>
+    <li><b>Facilidade em dispor do dinheiro.</b> Está sempre acessível.</li>
+    <li><b>Rapidez na transferência para credores</b>, através da moeda escritural, ou seja, dinheiro que existe como registo contabilístico e não como nota física.</li>
+  </ul>
+
+  <h3>As duas formas de depósito a prazo</h3>
+  <div class="defs two">
+    <div class="def"><div class="t">Mobilizável antecipadamente</div><div class="d">O cliente pode levantar antes do vencimento, segundo as condições acordadas entre as partes.</div><div class="ex">Na prática angolana, o levantamento antecipado custa habitualmente a penalização total dos juros corridos.</div></div>
+    <div class="def"><div class="t">Não mobilizável antecipadamente</div><div class="d">Exigível apenas no fim do prazo. O cliente não pode ser reembolsado antes do decurso do prazo, e o incumprimento é passível de multas avultadas.</div></div>
+  </div>
+
+  <div class="gist">
+    <h4>Para somar ao material: Fundo de Garantia de Depósitos</h4>
+    <p>O curso não o refere, mas é hoje parte obrigatória da informação ao cliente em Angola. O FGD garante o reembolso dos depósitos em caso de indisponibilidade decretada pelo BNA, abrangendo depósitos à ordem, com pré-aviso, a prazo (mobilizáveis e não mobilizáveis) e as restantes modalidades legalmente previstas. O reembolso é feito no prazo máximo de três meses a contar da comunicação do BNA ao Fundo.</p>
+  </div>
+
+  <div class="case"><div class="hd">Caso de balcão</div><div class="bd">
+    <p>Um cliente tem 3.000.000 Kz. Diz que precisa de cerca de 400.000 Kz por mês para despesas correntes, e que o resto não vai mexer durante um ano, mas tem medo de "ficar preso" se houver uma emergência.</p>
+    <div class="ans"><b>Repartir.</b> Cerca de 500.000 Kz em DO, para as despesas e uma folga. O restante em DP, e, dado o receio declarado, um DP <b>mobilizável antecipadamente</b>, explicando que a mobilização antecipada implica perda dos juros. A alternativa, se ele quiser render mais e aceitar a rigidez, é o não mobilizável.</div>
+  </div></div>
+
+  <div class="quiz" data-quiz="m7"></div>
+  <div class="done-row"><button class="btn btn-primary" data-done="m7">Marcar módulo 7 como concluído</button></div>
+</section>
+
+<!-- ============ M8 ============ -->
+<section class="mod" id="m8">
+  <div class="eyebrow">Módulo 8</div>
+  <h2 class="mt">A remuneração dos depósitos</h2>
+  <p class="sub">O módulo de cálculo. Juro simples, juro composto, e o imposto que ninguém se lembra de descontar.</p>
+
+  <div class="gist">
+    <h4>Em 30 segundos</h4>
+    <p>Quatro letras e uma regra. <span class="num">c</span> capital, <span class="num">n</span> tempo, <span class="num">i</span> taxa, <span class="num">j</span> juro. No <b>juro simples</b>, o juro calcula-se sempre sobre o capital inicial. No <b>juro composto</b>, o juro de cada período junta-se ao capital e passa a render também. Sobre o juro recebido incide o <b>IAC a 10%</b>, retido pelo banco no momento do pagamento.</p>
+  </div>
+
+  <h3>Os cinco elementos</h3>
+  <div class="defs two">
+    <div class="def"><div class="t">Juro (j)</div><div class="d">Rendimento do capital. Para o cliente, é a remuneração que recebe por emprestar dinheiro ao banco. Para o banco, é o montante pago pela possibilidade de usar o dinheiro do cliente.</div></div>
+    <div class="def"><div class="t">Capital (c)</div><div class="d">O montante depositado.</div></div>
+    <div class="def"><div class="t">Tempo (n)</div><div class="d">Período durante o qual o capital não será movimentado.</div></div>
+    <div class="def"><div class="t">Taxa de juro (i)</div><div class="d">Preço que o banco paga pela utilização do dinheiro do cliente, expresso em percentagem e referido a um período específico.</div></div>
+  </div>
+  <div class="def" style="margin-top:12px"><div class="t">Fiscalidade: IAC</div><div class="d">Imposto sobre a Aplicação de Capitais, à taxa de <b>10%</b>, retido na fonte no momento do pagamento dos juros.</div><div class="ex">Juro líquido = juro bruto × 0,9. O imposto incide sobre o juro, nunca sobre o capital.</div></div>
+
+  <h3>As duas hipóteses de capitalização</h3>
+  <div class="defs two">
+    <div class="def"><div class="t">Capitalização simples</div><div class="d">Os juros são creditados numa conta à ordem e o depósito a prazo é renovado pelo mesmo valor inicial. Com taxa constante, o cliente obtém em cada período exactamente o mesmo juro.</div></div>
+    <div class="def"><div class="t">Capitalização composta</div><div class="d">Os juros são adicionados, na data do vencimento, ao capital depositado, e passam a render também. O juro de cada período é maior que o anterior.</div></div>
+  </div>
+
+  <h3>As fórmulas, por unidade de tempo</h3>
+  <p>Aqui está a armadilha do módulo. O divisor que aparece nas fórmulas do material (365, 12, 4, 3, 2) existe por uma única razão: <b>a taxa está expressa ao ano e o tempo não</b>. O divisor converte a taxa anual para a unidade do tempo.</p>
+
+  <div class="tw"><table>
+    <tr><th>n expresso em</th><th>Fórmula do juro</th><th>Capital</th><th>Tempo</th><th>Taxa</th></tr>
+    <tr><td>Dias</td><td class="num">j = c·n·i / 365</td><td class="num">c = j·365 / (n·i)</td><td class="num">n = j·365 / (c·i)</td><td class="num">i = j·365 / (c·n)</td></tr>
+    <tr><td>Meses</td><td class="num">j = c·n·i / 12</td><td class="num">c = j·12 / (n·i)</td><td class="num">n = j·12 / (c·i)</td><td class="num">i = j·12 / (c·n)</td></tr>
+    <tr><td>Trimestres</td><td class="num">j = c·n·i / 4</td><td class="num">c = j·4 / (n·i)</td><td class="num">n = j·4 / (c·i)</td><td class="num">i = j·4 / (c·n)</td></tr>
+    <tr><td>Quadrimestres</td><td class="num">j = c·n·i / 3</td><td class="num">c = j·3 / (n·i)</td><td class="num">n = j·3 / (c·i)</td><td class="num">i = j·3 / (c·n)</td></tr>
+    <tr><td>Semestres</td><td class="num">j = c·n·i / 2</td><td class="num">c = j·2 / (n·i)</td><td class="num">n = j·2 / (c·i)</td><td class="num">i = j·2 / (c·n)</td></tr>
+    <tr><td>Anos</td><td class="num">j = c·n·i</td><td class="num">c = j / (n·i)</td><td class="num">n = j / (c·i)</td><td class="num">i = j / (c·n)</td></tr>
+  </table></div>
+
+  <div class="warn">
+    <h4>A regra única que substitui a tabela toda</h4>
+    <p>Não precisa de decorar seis linhas. Só precisa de uma frase: <b>a taxa e o tempo têm de estar na mesma unidade.</b></p>
+    <span class="fml">j = c × i × n   (com i e n na mesma unidade)</span>
+    <p style="margin-top:10px">Se a taxa é <b>anual</b> e o tempo vem em meses, divida a taxa por 12. Em dias, por 365. Em trimestres, por 4. Se a taxa já é <b>mensal</b> e o tempo vem em meses, não divida nada. Os exercícios 5 a 8 e 10 a 13 do material usam taxas mensais, e é aí que a maior parte das pessoas se engana ao aplicar o divisor 12 por hábito.</p>
+  </div>
+
+  <h3>Juro composto</h3>
+  <span class="fml">Montante:  M = c × (1 + i)ⁿ</span>
+  <span class="fml">Juro:      j = M − c = c × [(1 + i)ⁿ − 1]</span>
+  <p style="margin-top:12px">Com <span class="num">i</span> e <span class="num">n</span> na mesma unidade, tal como no simples. O expoente faz todo o trabalho: é ele que põe o juro a render juro.</p>
+
+  <figure>
+    <svg viewBox="0 0 700 300" role="img" aria-label="Gráfico que compara a evolução de 100.000 Kz a 15% ao mês durante 5 meses em juro simples e em juro composto">
+      <g font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--muted)">
+        <line x1="70" y1="250" x2="660" y2="250" stroke="var(--line)" stroke-width="1.5"/>
+        <line x1="70" y1="30" x2="70" y2="250" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="62" y="254" text-anchor="end">100.000</text>
+        <text x="62" y="199" text-anchor="end">125.000</text>
+        <text x="62" y="144" text-anchor="end">150.000</text>
+        <text x="62" y="89" text-anchor="end">175.000</text>
+        <text x="62" y="36" text-anchor="end">200.000</text>
+        <line x1="70" y1="195" x2="660" y2="195" stroke="var(--line)" stroke-dasharray="3 5"/>
+        <line x1="70" y1="140" x2="660" y2="140" stroke="var(--line)" stroke-dasharray="3 5"/>
+        <line x1="70" y1="85" x2="660" y2="85" stroke="var(--line)" stroke-dasharray="3 5"/>
+        <line x1="70" y1="31" x2="660" y2="31" stroke="var(--line)" stroke-dasharray="3 5"/>
+        <text x="70" y="270" text-anchor="middle">mês 0</text>
+        <text x="188" y="270" text-anchor="middle">1</text>
+        <text x="306" y="270" text-anchor="middle">2</text>
+        <text x="424" y="270" text-anchor="middle">3</text>
+        <text x="542" y="270" text-anchor="middle">4</text>
+        <text x="660" y="270" text-anchor="middle">5</text>
+      </g>
+      <polyline points="70,250 188,217 306,184 424,151 542,118 660,85" fill="none" stroke="var(--muted)" stroke-width="2.5" stroke-dasharray="7 5"/>
+      <polyline points="70,250 188,217 306,179 424,136 542,85 660,27" fill="none" stroke="var(--accent)" stroke-width="3"/>
+      <circle cx="660" cy="85" r="4.5" fill="var(--muted)"/>
+      <circle cx="660" cy="27" r="4.5" fill="var(--accent)"/>
+      <g font-family="Archivo,sans-serif" font-size="12" font-weight="600">
+        <rect x="88" y="42" width="14" height="3" fill="var(--accent)"/>
+        <text x="110" y="48" fill="var(--ink)">Juro composto → 201.135,72 Kz</text>
+        <rect x="88" y="66" width="14" height="3" fill="var(--muted)"/>
+        <text x="110" y="72" fill="var(--ink)">Juro simples → 175.000,00 Kz</text>
+      </g>
+    </svg>
+    <figcaption>100.000 Kz a 15% ao mês durante 5 meses. As duas curvas só coincidem no primeiro período; a diferença de 26.135,72 Kz é juro que rendeu juro.</figcaption>
+  </figure>
+
+  <div class="gist">
+    <h4>Método de resolução, em quatro passos</h4>
+    <p><b>1.</b> Sublinhe os dados e identifique qual das quatro letras falta. <b>2.</b> Veja em que unidade está a taxa e em que unidade está o tempo. <b>3.</b> Ponha as duas na mesma unidade. <b>4.</b> Aplique a fórmula e, se a pergunta falar em valor recebido, desconte o IAC de 10%.</p>
+  </div>
+
+  <p style="margin-top:18px">Passe agora à <a href="#calc">calculadora</a> para ganhar intuição, e depois aos <a href="#exerc">25 exercícios resolvidos</a>.</p>
+
+  <div class="quiz" data-quiz="m8"></div>
+  <div class="done-row"><button class="btn btn-primary" data-done="m8">Marcar módulo 8 como concluído</button></div>
+</section>
+
+<!-- ============ M9 ============ -->
+<section class="mod" id="m9">
+  <div class="eyebrow">Módulo 9</div>
+  <h2 class="mt">Meios de movimentação das contas</h2>
+  <p class="sub">Cartões, rede Multicaixa, ATM, TPA e transferências.</p>
+
+  <div class="gist">
+    <h4>Em 30 segundos</h4>
+    <p>Duas famílias de cartão: o de <b>débito</b> tira da sua conta à ordem; o de <b>crédito</b> usa uma linha de crédito do emissor e só depois é que o cliente paga. Dois equipamentos: o <b>ATM</b>, onde o cliente se serve; o <b>TPA</b>, no comerciante, onde o cliente paga. E a <b>transferência</b>, que é uma ordem do cliente para debitar a sua conta e creditar outra.</p>
+  </div>
+
+  <h3>Cartão de débito e cartão de crédito</h3>
+  <div class="tw"><table>
+    <tr><th></th><th>Cartão de débito</th><th>Cartão de crédito</th></tr>
+    <tr><td><b>Conta associada</b></td><td>Conta de depósitos à ordem</td><td>Conta-cartão com linha de crédito</td></tr>
+    <tr><td><b>Quando sai o dinheiro</b></td><td>No momento: a conta é debitada pelo valor</td><td>Mais tarde: o cliente beneficia de crédito concedido pela entidade emitente</td></tr>
+    <tr><td><b>Precisa de saldo?</b></td><td>Sim</td><td>Não, precisa de plafond disponível</td></tr>
+    <tr><td><b>Operações típicas</b></td><td>Levantamento em ATM, pagamento em TPA, consulta de saldos e movimentos, requisição de livro de cheques</td><td>Pagamentos e adiantamentos de dinheiro (cash advance)</td></tr>
+  </table></div>
+
+  <h3>O que acontece ao comerciante quando recebe um pagamento</h3>
+  <div class="defs two">
+    <div class="def"><div class="t">Cartão de débito de marca nacional</div><div class="d">A conta do titular é debitada pelo valor da compra. A conta do comerciante é creditada pelo valor da venda <b>deduzido da comissão</b> que ele paga ao acquirer.</div></div>
+    <div class="def"><div class="t">Cartão de crédito, ou de débito de marca internacional</div><div class="d">O pagamento ao comerciante é <b>assegurado pelo acquirer</b>, que o credita em prazo muito curto assim que processa os documentos da venda. A comissão depende essencialmente da <b>Taxa de Serviço do Comerciante (TSC)</b>.</div></div>
+  </div>
+  <p style="margin-top:12px"><b>Acquirer</b> é a entidade que contrata o comerciante, lhe instala o terminal e lhe garante o recebimento. A palavra não vem definida no material, mas é o sujeito das duas frases acima.</p>
+
+  <h3>Segurança dos cartões</h3>
+  <ul class="list">
+    <li>No próprio cartão: nome do titular, número do cartão e data de validade.</li>
+    <li>O cartão é <b>pessoal e intransmissível</b>.</li>
+    <li>O <b>PIN</b> é atribuído e facultado de forma sigilosa apenas ao titular. Se o titular o esquecer, tem de apresentar nova proposta de adesão.</li>
+    <li>Após <b>três falhas consecutivas</b> do código, o acesso ao serviço é suspenso.</li>
+    <li>Existem <b>limites diários de levantamento</b> nos cartões de débito.</li>
+  </ul>
+
+  <h3>Rede Multicaixa, ATM e TPA</h3>
+  <div class="defs">
+    <div class="def"><div class="t">Rede Multicaixa</div><div class="d">Rede universal em que qualquer cliente bancário com um cartão Multicaixa acede aos serviços disponibilizados na rede: levantar valores, pagar serviços, consultar saldos e movimentos, requisitar livro de cheques.</div><div class="ex">Universal significa que o cartão funciona na rede independentemente do banco emissor. É esse o conceito.</div></div>
+    <div class="def"><div class="t">ATM</div><div class="d">Máquina onde o <b>cliente</b> se serve: levantamentos, consulta de saldo, pagamento de alguns serviços.</div></div>
+    <div class="def"><div class="t">TPA</div><div class="d">Terminal de Pagamento Automático, instalado no <b>estabelecimento comercial</b>, que permite pagar bens ou serviços com cartão.</div><div class="ex">Para não trocar: ATM é do banco e dá dinheiro; TPA é do comerciante e recebe dinheiro.</div></div>
+  </div>
+  <p><b>Sequência de utilização na rede:</b> inserir o cartão, digitar o PIN, escolher a operação, inserir os dados da operação, concluir e retirar o cartão, recolher o comprovativo.</p>
+
+  <h3>Transferências</h3>
+  <div class="def"><div class="t">Transferência</div><div class="d">Operação pela qual um cliente, titular de conta aberta em certo banco, dá a este instruções para, <b>por débito da sua conta</b>, creditar determinada importância a outrem, cliente do mesmo banco ou de outro.</div></div>
+
+  <figure>
+    <svg viewBox="0 0 700 180" role="img" aria-label="Intervenientes numa transferência a crédito, do ordenante ao beneficiário">
+      <defs><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+      <g font-family="Archivo,sans-serif">
+        <rect x="6" y="48" width="150" height="66" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/>
+        <text x="81" y="76" text-anchor="middle" font-size="13.5" font-weight="700" fill="var(--ink)">Ordenante</text>
+        <text x="81" y="96" text-anchor="middle" font-size="11.5" fill="var(--muted)">contrata a transferência</text>
+
+        <rect x="188" y="48" width="150" height="66" rx="10" fill="var(--surface)" stroke="var(--line)" stroke-width="1.6"/>
+        <text x="263" y="70" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">Banco do</text>
+        <text x="263" y="88" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">ordenante</text>
+        <text x="263" y="105" text-anchor="middle" font-size="11" fill="var(--muted)">executante</text>
+
+        <rect x="370" y="48" width="150" height="66" rx="10" fill="var(--surface)" stroke="var(--line)" stroke-width="1.6" stroke-dasharray="5 4"/>
+        <text x="445" y="70" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">Banco do</text>
+        <text x="445" y="88" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">beneficiário</text>
+        <text x="445" y="105" text-anchor="middle" font-size="11" fill="var(--muted)">só se for outro banco</text>
+
+        <rect x="552" y="48" width="144" height="66" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/>
+        <text x="624" y="76" text-anchor="middle" font-size="13.5" font-weight="700" fill="var(--ink)">Beneficiário</text>
+        <text x="624" y="96" text-anchor="middle" font-size="11.5" fill="var(--muted)">destinatário</text>
+
+        <path d="M160 81 L184 81 M342 81 L366 81 M524 81 L548 81" stroke="var(--accent)" stroke-width="2.2" fill="none" marker-end="url(#ar2)"/>
+        <text x="350" y="30" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11.5" fill="var(--muted)">débito na conta de origem → crédito na conta de destino</text>
+        <text x="350" y="150" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11.5" fill="var(--muted)">se ordenante e beneficiário são do mesmo banco, a caixa a tracejado desaparece</text>
+      </g>
+    </svg>
+  </figure>
+
+  <h3>Classificação das transferências</h3>
+  <div class="tw"><table>
+    <tr><th>Critério</th><th>Tipo</th><th>Definição e exemplo</th></tr>
+    <tr><td rowspan="2"><b>Momento</b></td><td>Pontuais</td><td>Uma só vez. Avós que oferecem uma importância ao neto pelo aniversário.</td></tr>
+    <tr><td>Permanentes</td><td>Repetem-se automaticamente. Pais que pagam a mesada aos filhos todos os meses.</td></tr>
+    <tr><td rowspan="2"><b>Instituições envolvidas</b></td><td><b>Intrabancárias</b></td><td>Contas do ordenante e do beneficiário domiciliadas <b>no mesmo banco</b>.</td></tr>
+    <tr><td><b>Interbancárias</b></td><td>Contas domiciliadas <b>em bancos diferentes</b>. Subdividem-se em <b>domésticas ou nacionais</b> (contas no mesmo país) e <b>transfronteiras ou cross-border</b> (contas em países diferentes).</td></tr>
+  </table></div>
+
+  <div class="warn">
+    <h4>Erro no material original</h4>
+    <p>O slide 83 do PDF escreve "Interbancárias" nas duas linhas da tabela. A primeira deveria dizer <b>Intrabancárias</b>. O prefixo diz tudo: <i>intra</i> é dentro do mesmo banco, <i>inter</i> é entre bancos diferentes.</p>
+  </div>
+
+  <div class="case"><div class="hd">Caso de balcão</div><div class="bd">
+    <p>Um cliente do seu banco quer enviar 2.000 USD à filha, que estuda em Lisboa e tem conta num banco português. Pergunta como se classifica a operação.</p>
+    <div class="ans"><b>Transferência pontual, interbancária, transfronteira (cross-border).</b> Pontual porque é uma única vez; interbancária porque os bancos são diferentes; transfronteira porque as contas estão domiciliadas em países diferentes.</div>
+  </div></div>
+
+  <div class="quiz" data-quiz="m9"></div>
+  <div class="done-row"><button class="btn btn-primary" data-done="m9">Marcar módulo 9 como concluído</button></div>
+</section>
+
+<!-- ============ CALC ============ -->
+<section class="mod" id="calc">
+  <div class="eyebrow">Treino</div>
+  <h2 class="mt">Calculadora de juros</h2>
+  <p class="sub">Mude um valor e veja o efeito. Abre com o exercício 1 do material já preenchido.</p>
+  <div class="card">
+    <div class="calc">
+      <div class="fld"><label for="c-cap">Capital (c)</label><input id="c-cap" type="number" value="145000" step="any"></div>
+      <div class="fld"><label for="c-tx">Taxa de juro (i), em %</label><input id="c-tx" type="number" value="25" step="any"></div>
+      <div class="fld"><label for="c-txu">A taxa é</label><select id="c-txu"><option value="1">ao ano</option><option value="12">ao mês</option><option value="4">ao trimestre</option><option value="2">ao semestre</option></select></div>
+      <div class="fld"><label for="c-n">Tempo (n)</label><input id="c-n" type="number" value="180" step="any"></div>
+      <div class="fld"><label for="c-nu">O tempo está em</label><select id="c-nu"><option value="d">dias</option><option value="m">meses</option><option value="t">trimestres</option><option value="s">semestres</option><option value="a">anos</option></select></div>
+      <div class="fld"><label for="c-reg">Regime</label><select id="c-reg"><option value="s">Juro simples</option><option value="c">Juro composto</option></select></div>
+      <div class="out">
+        <div><div class="k">Juro bruto</div><div class="v" id="o-jb">—</div></div>
+        <div><div class="k">IAC 10%</div><div class="v" id="o-iac">—</div></div>
+        <div><div class="k">Juro líquido</div><div class="v" id="o-jl">—</div></div>
+        <div><div class="k">Montante bruto</div><div class="v" id="o-mb">—</div></div>
+        <div><div class="k">Montante líquido</div><div class="v" id="o-ml">—</div></div>
+        <div><div class="k">Taxa no período</div><div class="v" id="o-tp">—</div></div>
+      </div>
+    </div>
+    <p style="margin-top:14px;font-size:14.5px;color:var(--muted)">A conversão de unidades é feita automaticamente: a taxa é levada para a unidade do tempo antes do cálculo. No juro composto, o número de períodos é o tempo convertido para a unidade da taxa.</p>
+  </div>
+</section>
+
+<!-- ============ EXERCICIOS ============ -->
+<section class="mod" id="exerc">
+  <div class="eyebrow">Treino</div>
+  <h2 class="mt">Exercícios resolvidos</h2>
+  <p class="sub">Os 13 do material original, resolvidos passo a passo, mais 12 novos em dificuldade crescente. Tente antes de abrir.</p>
+
+  <h3>Parte A: os 13 exercícios do material</h3>
+  <p>Os quatro primeiros são a mesma situação vista de quatro ângulos. Resolva-os em sequência: é a melhor forma de interiorizar que há uma fórmula só, lida em quatro direcções.</p>
+  <div id="exA"></div>
+
+  <h3>Parte B: 12 exercícios novos</h3>
+  <p>Graduados. Os três últimos são de nível de exame.</p>
+  <div id="exB"></div>
+</section>
+
+<!-- ============ FLASHCARDS ============ -->
+<section class="mod" id="cartoes">
+  <div class="eyebrow">Treino</div>
+  <h2 class="mt">Flashcards</h2>
+  <p class="sub">Toque no cartão para ver a definição. Filtre por módulo para rever só o que estudou hoje.</p>
+  <div class="fcbar">
+    <select class="btn" id="fc-filter" aria-label="Filtrar flashcards por módulo"></select>
+    <button class="btn" id="fc-prev">Anterior</button>
+    <button class="btn" id="fc-next">Seguinte</button>
+    <span class="pill" id="fc-count">—</span>
+    <button class="btn" id="fc-shuffle">Baralhar</button>
+  </div>
+  <div class="fc" id="fc" tabindex="0" role="button" aria-label="Cartão. Toque para virar.">
+    <div class="fc-in">
+      <div class="fc-f"><div class="hint" id="fc-mod">—</div><div class="term" id="fc-term">—</div><div class="hint">toque para virar</div></div>
+      <div class="fc-b"><div class="d" id="fc-def">—</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXAME ============ -->
+<section class="mod" id="exame">
+  <div class="eyebrow">Avaliação</div>
+  <h2 class="mt">Exame final</h2>
+  <p class="sub">25 perguntas sorteadas de toda a matéria. Responda a todas e depois corrija. Aprovação a partir de 70%.</p>
+  <div class="quiz" id="examBox" data-quiz="exam"></div>
+  <div class="done-row">
+    <button class="btn btn-primary" id="exam-grade">Corrigir exame</button>
+    <button class="btn" id="exam-new">Novo exame</button>
+  </div>
+  <div id="exam-score" hidden></div>
+</section>
+
+<!-- ============ ERRATA ============ -->
+<section class="mod" id="errata">
+  <div class="eyebrow">Apoio</div>
+  <h2 class="mt">Correcções e actualizações ao material</h2>
+  <p class="sub">Seis pontos em que o PDF original está desactualizado ou incoerente, e o que fazer com cada um.</p>
+
+  <div class="tw"><table>
+    <tr><th>Onde</th><th>O que diz o material</th><th>Situação</th></tr>
+    <tr><td><b>Dever de segredo</b><br><span style="color:var(--muted);font-size:13px">slide 35</span></td><td>Lei n.º 13/05, das Instituições Financeiras</td><td>A Lei n.º 13/05 foi revogada pela Lei n.º 12/15, de 17 de Junho, que por sua vez foi revogada pela <b>Lei n.º 14/21, de 19 de Maio, Lei do Regime Geral das Instituições Financeiras</b>, em vigor desde essa data. O princípio do sigilo mantém-se; muda o diploma a citar.</td></tr>
+    <tr><td><b>Transferências</b><br><span style="color:var(--muted);font-size:13px">slide 83</span></td><td>"Interbancárias" nas duas linhas da tabela</td><td>A primeira deve ler-se <b>Intrabancárias</b>: contas no mesmo banco.</td></tr>
+    <tr><td><b>Exercícios 6, 7 e 8</b></td><td>Capital de 100.000 Kz com juro de 3.750 Kz mensais a 3% ao mês</td><td>Incoerente: 3% de 100.000 são 3.000, não 3.750. O capital que gera 3.750 Kz a 3% ao mês é <b>125.000 Kz</b>, e com esse valor os três exercícios fecham exactamente. O exercício 5, com 100.000 Kz, é autónomo e está correcto.</td></tr>
+    <tr><td><b>Insolvência e falência</b><br><span style="color:var(--muted);font-size:13px">slide 34</span></td><td>Duas definições praticamente iguais, ambas sobre não conseguir pagar</td><td>Não permitem distinguir os conceitos. Use: insolvência é o <b>estado</b> (passivo superior ao activo, ou incumprimento de obrigações vencidas); falência é o <b>processo judicial</b> de liquidação que se lhe segue.</td></tr>
+    <tr><td><b>Supervisão de seguros</b><br><span style="color:var(--muted);font-size:13px">slide 39</span></td><td>"Instituto de Supervisão de Seguros"</td><td>A entidade reguladora do sector segurador em Angola foi reestruturada e mudou de designação. Confirme o nome em vigor antes de o escrever numa prova; o conteúdo da excepção ao sigilo mantém-se.</td></tr>
+    <tr><td><b>Emancipação e menor trabalhador</b><br><span style="color:var(--muted);font-size:13px">slide 25</span></td><td>16 anos para rapaz, 14 para rapariga; menor trabalhador aos 14</td><td>Estas idades devem ser confirmadas na redacção actual do Código Civil e do Código do Trabalho antes de serem usadas como regra de atendimento. O princípio que não muda: o menor pode ser titular, e a débito assina o responsável legal.</td></tr>
+  </table></div>
+
+  <div class="gist">
+    <h4>Temas que o curso não cobre e valem a pena</h4>
+    <p><b>Fundo de Garantia de Depósitos</b> (já tratado no módulo 7). <b>KYC e prevenção do branqueamento de capitais</b>, hoje parte central da abertura de conta. <b>Taxa Anual Efectiva</b>, que permite comparar depósitos entre bancos. <b>Moeda escritural e moeda electrónica</b>, referidas de passagem no material mas não desenvolvidas. <b>Cheque</b>, mencionado como requisitável mas nunca explicado.</p>
+  </div>
+</section>
+
+<!-- ============ GLOSSARIO ============ -->
+<section class="mod" id="glos">
+  <div class="eyebrow">Apoio</div>
+  <h2 class="mt">Glossário</h2>
+  <p class="sub">Todos os termos do curso, numa página. Use-o na véspera.</p>
+  <div class="tw"><table id="glosT"><tr><th>Termo</th><th>Definição</th><th>Módulo</th></tr></table></div>
+  <footer>
+    <p>Manual de estudo construído a partir do curso "Produtos e Serviços Bancários", Luanda 2025, do formador António Nkosi da Silva. Conteúdo reescrito, reorganizado e complementado; esquemas originais. O progresso e as respostas ficam guardados apenas neste navegador.</p>
+  </footer>
+</section>
+
+</main>
+</div>
+
+<script>
+/* ---------- dados: perguntas ---------- */
+const Q = {
+m1:[
+ {q:"Qual foi o problema das trocas directas que a moeda veio resolver?",o:["A falta de bancos para guardar os bens","A necessidade de dupla coincidência de desejos entre as duas partes","A inexistência de empresas produtoras","A impossibilidade de transportar bens"],a:1,w:"Na troca directa, cada um tinha de querer exactamente o que o outro tinha, ao mesmo tempo. A moeda quebra essa exigência."},
+ {q:"Segundo o material, qual foi o segundo grupo de agentes económicos a surgir, depois das famílias?",o:["Os bancos","O Estado","As empresas","Os comerciantes ambulantes"],a:2,w:"A sequência é: famílias, empresas e só depois o banco, que se intercala entre os dois primeiros."},
+ {q:"O banco surgiu como intermediário entre que agentes?",o:["Entre o Estado e as empresas","Entre agentes com rendimentos excedentários e agentes que deles careciam","Entre famílias e o banco central","Entre importadores e exportadores"],a:1,w:"Uns e outros podem ser famílias ou empresas. O que os distingue não é a natureza, é terem excedente ou escassez."},
+ {q:"Qual é a função económica que o material atribui ao banco ao usar os depósitos para conceder empréstimos?",o:["Aumentar a quantidade de notas em circulação","Canalizar dinheiro parado para a produção","Fixar as taxas de câmbio","Garantir o pagamento de impostos"],a:1,w:"É a frase central do módulo: o banco põe a andar dinheiro que estava imobilizado."},
+ {q:"Uma empresa com excedente de tesouraria que constitui um depósito a prazo é, nessa operação:",o:["Um agente deficitário","Um agente excedentário","Um intermediário financeiro","Um acquirer"],a:1,w:"O papel depende da operação, não do tipo de entidade: a mesma empresa pode ser excedentária num mês e deficitária no seguinte."},
+ {q:"Porque é que a quitandeira do exemplo não empresta directamente ao serralheiro?",o:["Porque a lei angolana o proíbe","Porque não tem como avaliar o risco nem garantir que recupera o dinheiro","Porque o valor é demasiado baixo","Porque não tem conta bancária"],a:1,w:"Avaliação de risco e transformação de prazos são exactamente o serviço pelo qual o banco é remunerado."},
+ {q:"Qual destas NÃO é uma função do banco enquanto intermediário financeiro?",o:["Transformar prazos curtos em prazos longos","Assumir o risco de crédito do mutuário","Emitir a moeda que circula no país","Captar poupança dispersa e agregá-la"],a:2,w:"Emitir moeda é função do banco central, o BNA, não dos bancos comerciais."}
+],
+m2:[
+ {q:"A característica que exige que a moeda possa ser subdividida sem perda de valor chama-se:",o:["Homogeneidade","Divisibilidade","Portabilidade","Cunhabilidade"],a:1,w:"Divisibilidade é poder partir. Homogeneidade é todas as unidades serem iguais entre si."},
+ {q:"Dizer que todas as notas de 500 Kz são do mesmo material e da mesma qualidade corresponde a que característica?",o:["Homogeneidade","Estabilidade de valor","Identificabilidade","Durabilidade"],a:0,w:"Homogeneidade é a uniformidade do material de que a moeda é composta."},
+ {q:"A exigência de que a moeda receba um cunho ou marca oficial que comprove o seu carácter de numerário é a:",o:["Identificabilidade","Durabilidade","Cunhabilidade","Portabilidade"],a:2,w:"O cunho é a marca oficial que atesta ser numerário e indica o valor."},
+ {q:"Qual destes elementos de segurança da nota se verifica pelo tacto?",o:["Marca de água","Impressão a talhe doce","Microimpressão","Numeração fluorescente"],a:1,w:"O talhe doce cria relevo sensível ao tacto, com combinação gradual de cores sem corte entre elas."},
+ {q:"A microimpressão distingue-se por:",o:["Mudar de cor conforme o ângulo de visão","Só ser perceptível sob luz ultravioleta","Não poder ser reproduzida por scanner nem por fotocopiadora a cores","Estar incorporada na massa do papel"],a:2,w:"É por isso que resiste bem à falsificação caseira. Mudar de cor com o ângulo é o OVI."},
+ {q:"O desenho geométrico que, visto contra a luz, faz aparecer a inscrição BNA perfeitamente delineada nos dois lados da nota chama-se:",o:["Registo perfeito","Imagem latente","Faixa sobreposta","Fio de segurança"],a:0,w:"Registo perfeito é a coincidência exacta entre o desenho da frente e o do verso."},
+ {q:"A função da moeda que a inflação põe em causa é a de:",o:["Intermediário das trocas","Reserva de valor","Medida de valor","Meio de pagamento"],a:1,w:"Com inflação alta, guardar moeda deixa de preservar poder de compra. Daí a característica estabilidade de valor."}
+],
+m3:[
+ {q:"A captação de recursos junto de agentes com excesso de fundos corresponde a:",o:["Operações activas","Operações passivas","Prestação de serviços","Operações de mercado aberto"],a:1,w:"O depósito é uma dívida do banco para com o cliente, logo passivo. Pense sempre pelo balanço do banco."},
+ {q:"A concessão de crédito a agentes com escassez de recursos gera:",o:["Juros passivos","Comissões","Juros activos","Margem de serviços"],a:2,w:"Operação activa gera juro activo, que é proveito para o banco."},
+ {q:"A margem financeira calcula-se como:",o:["JP − JA","JA − JP","MF + SB","JA + JP"],a:1,w:"Juros activos menos juros passivos. É o resultado bruto da intermediação."},
+ {q:"O produto bancário corresponde a:",o:["MF + SB","JA − JP","SB − MF","JA + SB"],a:0,w:"Margem financeira mais serviços bancários cobrados por comissão. É a receita total da actividade."},
+ {q:"Um banco paga 3.000 de juros a depositantes, recebe 9.000 de juros de mutuários e cobra 2.000 de comissões. Qual é a margem financeira?",o:["11.000","8.000","6.000","9.000"],a:2,w:"9.000 − 3.000 = 6.000. As comissões não entram na margem financeira; entram no produto bancário, que seria 8.000."},
+ {q:"A cobrança de uma comissão por emissão de cartão insere-se em:",o:["Operações activas","Operações passivas","Prestação de serviços","Intermediação financeira"],a:2,w:"Não há captação nem concessão de fundos: o banco presta um serviço e cobra por ele."},
+ {q:"Um cliente constitui um depósito a prazo de 1.000.000 Kz. Para o banco, essa operação é:",o:["Activa, porque o banco recebe dinheiro","Passiva, porque gera uma obrigação do banco para com o cliente","Prestação de serviços, porque o banco guarda o valor","Activa, porque o banco vai emprestar esse dinheiro"],a:1,w:"A armadilha clássica. O facto de o banco receber dinheiro não o torna activo: torna-o devedor, logo passivo."}
+],
+m4:[
+ {q:"O nascimento da conta bancária é:",o:["Anterior ao contrato de depósito","Posterior ao primeiro movimento a crédito","Indissociável e simultâneo do estabelecimento do contrato de depósito","Independente de qualquer contrato"],a:2,w:"Não há conta sem contrato de depósito, nem contrato de depósito sem conta."},
+ {q:"A expressão contabilística do depósito na escrita do banco, que traduz a relação com o cliente por lançamentos a débito e a crédito, chama-se:",o:["Ficha de assinatura","Conta-cliente","Extracto","Contrato de depósito"],a:1,w:"Conta-cliente. A conta, em sentido contabilístico puro, é o conjunto de elementos patrimoniais com características comuns."},
+ {q:"Qual destes elementos NÃO consta da ficha de assinatura?",o:["Os titulares da conta","O tipo de conta","A taxa de juro do crédito à habitação","Os espécimes de assinatura válidos"],a:2,w:"A ficha regista titulares, tipo de conta, condições especiais de movimentação e espécimes de assinatura."},
+ {q:"Numa conta colectiva solidária, para movimentar a débito:",o:["São precisas as assinaturas de todos os titulares","Basta a assinatura de qualquer um dos titulares","É precisa a assinatura de metade dos titulares","É precisa autorização do banco"],a:1,w:"Solidária significa sozinho basta. Conjunta é que exige todos."},
+ {q:"Dois titulares, conta conjunta. Aparece um deles sozinho para levantar. O bancário deve:",o:["Pagar, porque é titular","Pagar metade","Recusar, por faltar a assinatura do outro titular","Pagar e pedir ao outro que assine depois"],a:2,w:"Na conjunta exigem-se as assinaturas de todos os titulares, sem excepção."},
+ {q:"Morre um titular de uma conta colectiva SOLIDÁRIA. O que acontece ao saldo?",o:["Fica bloqueado na totalidade","Pode bloquear-se apenas a parte correspondente ao titular falecido","Não há bloqueio nenhum","Passa automaticamente para os herdeiros"],a:1,w:"A solidária é a única excepção ao bloqueio total. Conjunta, mista e singular bloqueiam tudo."},
+ {q:"Qual é o documento cuja apresentação levanta o bloqueio da conta por óbito?",o:["A certidão de óbito","O bilhete de identidade dos herdeiros","A escritura de habilitação de herdeiros","Uma declaração do banco"],a:2,w:"A certidão de óbito é o que desencadeia o bloqueio; a habilitação de herdeiros é o que o levanta."}
+],
+m5:[
+ {q:"A possibilidade de uma pessoa ser sujeito de direitos ou obrigações chama-se:",o:["Capacidade de exercício","Personalidade jurídica","Legitimidade","Idoneidade"],a:1,w:"Personalidade é poder ser titular. Capacidade é poder exercer sozinho."},
+ {q:"As pessoas colectivas adquirem personalidade jurídica:",o:["Com o início da actividade","Com a abertura da conta bancária","Com a sua constituição e o registo comercial","Com a primeira declaração fiscal"],a:2,w:"As singulares adquirem-na com o nascimento completo com vida; as colectivas, com constituição e registo."},
+ {q:"Um menor de 15 anos pode ser titular de uma conta bancária?",o:["Não, por lhe faltar personalidade jurídica","Sim, mas a ficha deve conter a assinatura do responsável legal","Sim, e movimenta sozinho a débito","Só se estiver emancipado"],a:1,w:"O menor tem personalidade, logo pode ser titular. Falta-lhe capacidade de exercício, daí a assinatura do responsável legal."},
+ {q:"O interdito é representado por:",o:["Um curador","Um procurador","Um tutor","O cônjuge"],a:2,w:"Interdito e tutor andam juntos. Curador é do inabilitado."},
+ {q:"A inabilitação distingue-se da interdição porque:",o:["Atinge apenas pessoas colectivas","Implica incapacidade parcial, e não total","Não permite ser titular de conta","Não carece de decisão judicial"],a:1,w:"Nos termos do art.º 152.º do Código Civil, o inabilitado é atingido por incapacidade parcial, carecendo de autorização do curador para certos actos."},
+ {q:"O analfabeto, em termos jurídicos:",o:["Não tem capacidade jurídica","Tem personalidade mas não tem capacidade","Tem personalidade e tem capacidade jurídica","Precisa de tutor para abrir conta"],a:2,w:"A pergunta-armadilha do módulo. A limitação do analfabeto é prática, não jurídica: não sabe ler nem escrever."},
+ {q:"Quais são as duas formas de o analfabeto movimentar a sua conta?",o:["Procuração notarial ou cartão Multicaixa","Assinatura a rogo reconhecida no notário, ou impressão digital visada por dois funcionários bancários","Assinatura do cônjuge ou do filho mais velho","Autorização do gerente do balcão"],a:1,w:"São exactamente estas duas, e a impressão digital exige o visto de dois funcionários, não de um."}
+],
+m6:[
+ {q:"O dever de segredo abrange:",o:["Apenas os saldos das contas","Apenas os administradores do banco","Os nomes dos clientes, as suas contas, os respectivos movimentos e demais operações","Apenas operações acima de um determinado valor"],a:2,w:"Confirmar que alguém é cliente já é revelar informação coberta."},
+ {q:"O dever de segredo cessa quando o funcionário deixa o banco?",o:["Sim, imediatamente","Sim, ao fim de cinco anos","Não, não cessa com o termo das funções ou serviços","Só cessa por autorização do BNA"],a:2,w:"A regra mais cobrada do módulo. Quem saiu continua obrigado."},
+ {q:"Quem, além dos empregados e administradores, está sujeito ao dever de segredo?",o:["Apenas os membros dos órgãos de fiscalização","Os membros dos órgãos de fiscalização e quem preste serviços a título permanente ou ocasional","Só quem tenha contrato sem termo","Os clientes do banco"],a:1,w:"A expressão permanente ou ocasional apanha auditores externos, informáticos contratados e estagiários."},
+ {q:"Para revelar informação a pedido do próprio cliente, o banco exige:",o:["Pedido verbal ao balcão","Autorização do cliente transmitida por escrito à instituição","Confirmação por telefone com o PIN","Nada, basta identificar-se"],a:1,w:"Tem de ser por escrito e dirigida à instituição."},
+ {q:"Qual destas entidades NÃO consta das excepções ao dever de segredo listadas no material?",o:["O Banco Nacional de Angola","A Comissão de Mercado de Capitais","A Administração Geral Tributária","O Ministério Público, por despacho"],a:2,w:"O material lista cliente, BNA, Comissão de Mercado de Capitais, supervisão de seguros e despacho do juiz ou do Ministério Público."},
+ {q:"Um juiz pretende aceder a movimentos de uma conta para instrução de um processo. O banco deve:",o:["Recusar, invocando sigilo bancário","Pedir autorização ao cliente primeiro","Fornecer, mediante despacho do Juiz de Direito ou do Magistrado do Ministério Público","Fornecer apenas o saldo"],a:2,w:"É uma das cinco excepções expressas, e exige despacho, não um pedido informal."},
+ {q:"Um amigo pergunta-lhe se determinado empresário conhecido é cliente do seu banco. Deve:",o:["Confirmar, por não ser informação financeira","Confirmar apenas se for notório","Não revelar, porque o nome do cliente está coberto pelo segredo","Confirmar e não revelar saldos"],a:2,w:"Os nomes dos clientes constam expressamente do que está sujeito a segredo."}
+],
+m7:[
+ {q:"No contrato de depósito, o cliente é o ___ e o banco é o ___.",o:["depositário / depositante","depositante / depositário","ordenante / beneficiário","mutuário / mutuante"],a:1,w:"O cliente deposita, logo é depositante. O banco guarda, logo é depositário."},
+ {q:"Em Angola, o recebimento de depósitos em dinheiro e outros valores só pode ser realizado por:",o:["Qualquer sociedade comercial registada","Instituições de crédito registadas no BNA","Casas de câmbio autorizadas","Empresas com alvará do Ministério das Finanças"],a:1,w:"É uma actividade reservada, e o registo é junto do Banco Nacional de Angola."},
+ {q:"A modalidade em que o banco fica obrigado a restituir a qualquer momento o dinheiro confiado é:",o:["Depósito a prazo","Depósito com pré-aviso","Depósito à ordem","Depósito não mobilizável"],a:2,w:"É a disponibilidade imediata que caracteriza o depósito à ordem, e é também por isso que rende pouco ou nada."},
+ {q:"No depósito com pré-aviso, o depositante compromete-se a:",o:["Não levantar antes do vencimento","Avisar previamente, por escrito, antes de efectuar levantamentos","Manter um saldo médio mínimo","Renovar automaticamente o depósito"],a:1,w:"Não há data fixa de vencimento; há obrigação de aviso prévio escrito."},
+ {q:"Um depósito a prazo NÃO mobilizável antecipadamente caracteriza-se por:",o:["Permitir levantamento a qualquer momento com perda de juros","Ser exigível apenas no fim do prazo, com multas avultadas em caso de incumprimento","Ter taxa variável","Não ser remunerado"],a:1,w:"É o mais rígido e, por isso, normalmente o mais bem remunerado."},
+ {q:"O princípio da liberdade contratual implica que:",o:["O BNA fixa as taxas de todos os depósitos","Cada instituição define livremente, dentro dos limites da lei, as características dos depósitos que comercializa","O cliente não pode negociar condições","Todos os bancos oferecem as mesmas condições"],a:1,w:"E implica também que ambas as partes têm de estar de acordo quanto à própria decisão de contratar."},
+ {q:"A rapidez com que o cliente transfere dinheiro para os seus credores através do depósito à ordem assenta na:",o:["Moeda metálica","Moeda escritural","Moeda fiduciária","Moeda estrangeira"],a:1,w:"Moeda escritural é a que existe como registo contabilístico, sem circulação de notas."}
+],
+m8:[
+ {q:"Um capital de 200.000 Kz aplicado 90 dias a 12% ao ano rende que juro?",o:["5.917,81 Kz","24.000,00 Kz","6.000,00 Kz","2.400,00 Kz"],a:0,w:"j = 200.000 × 90 × 0,12 / 365 = 5.917,81 Kz."},
+ {q:"Na fórmula j = c·n·i/12, o divisor 12 existe porque:",o:["O ano tem 12 meses de 30 dias","A taxa está expressa ao ano e o tempo está em meses","O IAC é cobrado 12 vezes","O banco capitaliza mensalmente"],a:1,w:"O divisor converte a taxa anual para a unidade do tempo. Se a taxa já for mensal, não se divide."},
+ {q:"Uma aplicação a 3% ao mês durante 15 meses, em juro simples, sobre 100.000 Kz, rende:",o:["3.000 Kz","45.000 Kz","3.750 Kz","37.500 Kz"],a:1,w:"Taxa e tempo já estão na mesma unidade: j = 100.000 × 15 × 0,03 = 45.000 Kz. Dividir por 12 aqui é o erro mais comum."},
+ {q:"O IAC incide sobre:",o:["O capital depositado","O montante final","Os juros, à taxa de 10%, retidos no pagamento","A diferença entre juro bruto e inflação"],a:2,w:"É retenção na fonte sobre o juro. O capital nunca é tributado."},
+ {q:"Na capitalização composta, os juros:",o:["São creditados numa conta à ordem e o DP renova pelo valor inicial","São adicionados ao capital na data do vencimento e passam a render também","São pagos só no fim, sem render","São isentos de IAC"],a:1,w:"A primeira opção descreve a capitalização simples, em que o cliente recebe sempre o mesmo juro por período."},
+ {q:"100.000 Kz a 15% ao mês durante 5 meses, em juro composto, dão que montante?",o:["175.000,00 Kz","201.135,72 Kz","150.000,00 Kz","207.500,00 Kz"],a:1,w:"M = 100.000 × 1,15⁵ = 201.135,72 Kz. Em juro simples seriam 175.000 Kz: a diferença de 26.135,72 Kz é o juro que rendeu juro."},
+ {q:"Um juro bruto de 50.000 Kz corresponde a que valor líquido depois do IAC?",o:["40.000 Kz","45.000 Kz","49.000 Kz","50.000 Kz"],a:1,w:"50.000 × 0,9 = 45.000 Kz. A retenção é de 10%."}
+],
+m9:[
+ {q:"O cartão de débito tem associada:",o:["Uma linha de crédito","Uma conta de depósitos à ordem","Uma conta a prazo","Uma conta-cartão"],a:1,w:"Quando é usado, a conta de depósitos é debitada de imediato pelo valor correspondente."},
+ {q:"Ao usar um cartão de crédito para um cash advance, o titular:",o:["Levanta do seu saldo à ordem","Beneficia de um crédito concedido pela entidade emitente","Transfere entre as suas contas","Paga sem comissões"],a:1,w:"O cartão de crédito usa uma linha de crédito, não o saldo do cliente."},
+ {q:"O TPA é:",o:["A máquina do banco onde se levanta dinheiro","O terminal no estabelecimento comercial que permite pagar com cartão","O sistema de compensação interbancária","O terminal de emissão de cartões"],a:1,w:"ATM é do banco e dá dinheiro. TPA é do comerciante e recebe dinheiro."},
+ {q:"Após quantas falhas consecutivas do PIN é suspenso o acesso ao serviço?",o:["Duas","Três","Cinco","Dez"],a:1,w:"Três falhas consecutivas, e o esquecimento do PIN implica nova proposta de adesão."},
+ {q:"Quando o pagamento é feito com cartão de débito de marca nacional, a conta do comerciante é creditada:",o:["Pelo valor integral da venda","Pelo valor da venda deduzido da comissão paga ao acquirer","Apenas no fim do mês","Pelo valor acrescido da TSC"],a:1,w:"Com cartão de crédito ou de débito internacional, é o acquirer que assegura o pagamento ao comerciante em prazo curto."},
+ {q:"Uma transferência entre duas contas domiciliadas no MESMO banco classifica-se como:",o:["Interbancária doméstica","Intrabancária","Transfronteira","Cross-border"],a:1,w:"Intra é dentro do mesmo banco. O material original escreve interbancária nas duas linhas da tabela, por lapso."},
+ {q:"Pais que pagam mesada aos filhos todos os meses por transferência fazem uma transferência:",o:["Pontual","Permanente","Transfronteira","Intrabancária obrigatoriamente"],a:1,w:"Permanente, porque se repete. Pontual seria o presente de aniversário dado uma única vez."}
+]
+};
+
+/* ---------- dados: exercícios ---------- */
+const EXA=[
+ {t:"1",h:"Aplicação de 145.000 Kz durante 180 dias, taxa de 25%. Qual o juro?",d:"c = 145.000 Kz · n = 180 dias · i = 25% ao ano · j = ?",s:["Taxa ao ano, tempo em dias: usa-se o divisor 365.","j = c·n·i / 365","j = 145.000 × 180 × 0,25 / 365","j = 6.525.000 / 365"],r:"j = 17.876,71 Kz"},
+ {t:"2",h:"O mesmo capital de 145.000 Kz rendeu 17.876,71 Kz a 25%. Qual foi o prazo em dias?",d:"c = 145.000 Kz · j = 17.876,71 Kz · i = 25% ao ano · n = ?",s:["Isola-se n na mesma fórmula.","n = j·365 / (c·i)","n = 17.876,71 × 365 / (145.000 × 0,25)","n = 6.525.000 / 36.250"],r:"n = 180 dias"},
+ {t:"3",h:"145.000 Kz renderam 17.876,71 Kz em 180 dias. Qual a taxa praticada?",d:"c = 145.000 Kz · j = 17.876,71 Kz · n = 180 dias · i = ?",s:["i = j·365 / (c·n)","i = 17.876,71 × 365 / (145.000 × 180)","i = 6.525.000 / 26.100.000","i = 0,25"],r:"i = 25% ao ano"},
+ {t:"4",h:"Em 180 dias a 25%, o cliente recebeu 17.876,71 Kz. Qual o capital aplicado?",d:"j = 17.876,71 Kz · n = 180 dias · i = 25% ao ano · c = ?",s:["c = j·365 / (n·i)","c = 17.876,71 × 365 / (180 × 0,25)","c = 6.525.000 / 45"],r:"c = 145.000 Kz"},
+ {t:"5",h:"Empréstimo de 100.000 Kz por 15 meses, taxa de 3% ao mês. Qual o juro?",d:"c = 100.000 Kz · n = 15 meses · i = 3% ao mês · j = ?",s:["Atenção: a taxa já é mensal e o tempo está em meses. Não se divide por 12.","j = c × n × i","j = 100.000 × 15 × 0,03","Juro mensal: 100.000 × 0,03 = 3.000 Kz"],r:"j = 45.000 Kz no total (3.000 Kz por mês)"},
+ {t:"6",h:"Um empréstimo proporcionou 3.750 Kz de juro, à taxa de 3% ao mês. Qual o tempo?",d:"j = 3.750 Kz · i = 3% ao mês · c = 125.000 Kz · n = ?",s:["O enunciado original diz 100.000 Kz, mas 3% de 100.000 são 3.000 Kz e não 3.750 Kz. O capital coerente com os exercícios 6, 7 e 8 é 125.000 Kz.","n = j / (c × i)","n = 3.750 / (125.000 × 0,03)","n = 3.750 / 3.750"],r:"n = 1 mês"},
+ {t:"7",h:"Um cliente recebeu 3.750 Kz por mês durante 15 meses, à taxa de 3% ao mês. Qual o capital?",d:"j mensal = 3.750 Kz · n = 15 meses · i = 3% ao mês · c = ?",s:["Juro total: 3.750 × 15 = 56.250 Kz","c = j / (n × i)","c = 56.250 / (15 × 0,03)","c = 56.250 / 0,45","Confirmação pelo juro mensal: 3.750 / 0,03 = 125.000 Kz"],r:"c = 125.000 Kz"},
+ {t:"8",h:"Qual a taxa mensal que rendeu 3.750 Kz sobre o capital apurado no exercício anterior?",d:"j = 3.750 Kz por mês · c = 125.000 Kz · n = 1 mês · i = ?",s:["i = j / (c × n)","i = 3.750 / (125.000 × 1)","i = 0,03","Se o avaliador insistir em c = 100.000 Kz, a resposta passaria a 3,75% ao mês, o que contradiz o enunciado dos exercícios 5 e 6."],r:"i = 3% ao mês"},
+ {t:"9",h:"Organizações Heng ganharam 8.064 USD em 112 dias. O Banco Yetu aplica 18%. Qual o montante aplicado?",d:"j = 8.064 USD · n = 112 dias · i = 18% ao ano · c = ?",s:["c = j·365 / (n·i)","c = 8.064 × 365 / (112 × 0,18)","c = 2.943.360 / 20,16"],r:"c = 146.000 USD"},
+ {t:"10",h:"Um capital de 25.000.000 USD aplicado 2 meses rendeu 5.000.000 USD. Qual a taxa?",d:"c = 25.000.000 USD · n = 2 meses · j = 5.000.000 USD · i = ?",s:["Taxa mensal: i = j / (c × n)","i = 5.000.000 / (25.000.000 × 2) = 0,10","Expressa ao ano, pela fórmula i = j·12 / (c·n):","i = 60.000.000 / 50.000.000 = 1,20"],r:"i = 10% ao mês, equivalente a 120% ao ano"},
+ {t:"11",h:"Que quantia deve ser aplicada durante 3 meses, a 1,5% ao mês, para obter 441 Kz de juro?",d:"j = 441 Kz · n = 3 meses · i = 1,5% ao mês · c = ?",s:["Taxa mensal e tempo em meses: não se divide.","c = j / (n × i)","c = 441 / (3 × 0,015)","c = 441 / 0,045"],r:"c = 9.800 Kz"},
+ {t:"12",h:"100.000 Kz durante 5 meses a 15% ao mês, em juro composto. Qual o valor final?",d:"c = 100.000 Kz · n = 5 meses · i = 15% ao mês · regime composto",s:["M = c × (1 + i)ⁿ = 100.000 × 1,15⁵","Mês 1: 100.000 + 15.000 = 115.000,00","Mês 2: 115.000 + 17.250 = 132.250,00","Mês 3: 132.250 + 19.837,50 = 152.087,50","Mês 4: 152.087,50 + 22.813,13 = 174.900,63","Mês 5: 174.900,63 + 26.235,09 = 201.135,72","Se em vez disso houvesse amortização do juro no fim de cada mês, seria juro simples: 100.000 × 5 × 0,15 = 75.000 Kz de juro, ou 175.000 Kz de montante.","Com IAC de 10% sobre os 101.135,72 Kz de juro composto, o cliente receberia 191.022,15 Kz."],r:"M = 201.135,72 Kz · juro = 101.135,72 Kz"},
+ {t:"13",h:"50.000 EUR durante 5 meses a 7,5% ao mês, em juro composto. Qual o valor final?",d:"c = 50.000 EUR · n = 5 meses · i = 7,5% ao mês · regime composto",s:["M = 50.000 × 1,075⁵","Mês 1: 50.000 + 3.750,00 = 53.750,00","Mês 2: 53.750 + 4.031,25 = 57.781,25","Mês 3: 57.781,25 + 4.333,59 = 62.114,84","Mês 4: 62.114,84 + 4.658,61 = 66.773,45","Mês 5: 66.773,45 + 5.008,01 = 71.781,47","Em juro simples seriam 50.000 × 5 × 0,075 = 18.750 EUR de juro, ou 68.750 EUR."],r:"M = 71.781,47 EUR · juro = 21.781,47 EUR"}
+];
+const EXB=[
+ {t:"N1",h:"200.000 Kz aplicados 90 dias a 12% ao ano. Qual o juro?",d:"Nível: aquecimento",s:["j = 200.000 × 90 × 0,12 / 365","j = 2.160.000 / 365"],r:"j = 5.917,81 Kz"},
+ {t:"N2",h:"500.000 Kz aplicados 6 meses a 14% ao ano. Qual o juro?",d:"Nível: aquecimento",s:["Taxa anual, tempo em meses: divisor 12.","j = 500.000 × 6 × 0,14 / 12","j = 420.000 / 12"],r:"j = 35.000 Kz"},
+ {t:"N3",h:"Um depósito de 500.000 Kz a 14% ao ano rendeu 35.000 Kz. Durante quantos meses?",d:"Nível: aquecimento",s:["n = j·12 / (c·i)","n = 35.000 × 12 / (500.000 × 0,14)","n = 420.000 / 70.000"],r:"n = 6 meses"},
+ {t:"N4",h:"1.200.000 Kz aplicados 180 dias renderam 59.178,08 Kz. Qual a taxa anual?",d:"Nível: intermédio",s:["i = j·365 / (c·n)","i = 59.178,08 × 365 / (1.200.000 × 180)","i = 21.600.000 / 216.000.000"],r:"i = 10% ao ano"},
+ {t:"N5",h:"Que capital rende 24.000 Kz em 4 meses, à taxa de 18% ao ano?",d:"Nível: intermédio",s:["c = j·12 / (n·i)","c = 24.000 × 12 / (4 × 0,18)","c = 288.000 / 0,72"],r:"c = 400.000 Kz"},
+ {t:"N6",h:"Um DP de 800.000 Kz a 1 ano, taxa de 16% ao ano. Quanto recebe o cliente no vencimento, depois do IAC?",d:"Nível: intermédio. Envolve fiscalidade.",s:["Juro bruto: 800.000 × 1 × 0,16 = 128.000 Kz","IAC 10%: 128.000 × 0,10 = 12.800 Kz","Juro líquido: 128.000 − 12.800 = 115.200 Kz","Montante líquido: 800.000 + 115.200"],r:"Recebe 915.200 Kz, dos quais 115.200 Kz de juro líquido"},
+ {t:"N7",h:"300.000 Kz aplicados 2 trimestres a 16% ao ano. Qual o juro?",d:"Nível: intermédio",s:["Tempo em trimestres: divisor 4.","j = 300.000 × 2 × 0,16 / 4","j = 96.000 / 4"],r:"j = 24.000 Kz"},
+ {t:"N8",h:"1.000.000 Kz aplicados 3 semestres a 20% ao ano. Qual o juro?",d:"Nível: intermédio",s:["Tempo em semestres: divisor 2.","j = 1.000.000 × 3 × 0,20 / 2","j = 600.000 / 2"],r:"j = 300.000 Kz"},
+ {t:"N9",h:"250.000 Kz durante 3 meses a 4% ao mês, em juro composto. Qual o montante?",d:"Nível: intermédio",s:["M = 250.000 × 1,04³","1,04³ = 1,124864","M = 250.000 × 1,124864","Juro = 281.216 − 250.000"],r:"M = 281.216,00 Kz · juro = 31.216,00 Kz"},
+ {t:"N10",h:"1.000.000 Kz durante 12 meses a 2% ao mês. Qual a diferença entre o regime simples e o composto?",d:"Nível: exame",s:["Simples: j = 1.000.000 × 12 × 0,02 = 240.000 Kz → montante 1.240.000 Kz","Composto: M = 1.000.000 × 1,02¹² = 1.268.241,79 Kz → juro 268.241,79 Kz","Diferença: 268.241,79 − 240.000"],r:"O composto rende mais 28.241,79 Kz"},
+ {t:"N11",h:"Quantos dias são precisos para 400.000 Kz renderem 20.000 Kz à taxa de 18,25% ao ano?",d:"Nível: exame",s:["n = j·365 / (c·i)","n = 20.000 × 365 / (400.000 × 0,1825)","n = 7.300.000 / 73.000"],r:"n = 100 dias"},
+ {t:"N12",h:"600.000 Kz durante 2 meses a 5% ao mês, em juro composto, com IAC no vencimento. Quanto recebe o cliente?",d:"Nível: exame. Composto mais fiscalidade.",s:["M bruto = 600.000 × 1,05² = 600.000 × 1,1025 = 661.500,00 Kz","Juro bruto: 661.500 − 600.000 = 61.500,00 Kz","IAC 10%: 6.150,00 Kz","Juro líquido: 55.350,00 Kz","Montante líquido: 600.000 + 55.350"],r:"Recebe 655.350,00 Kz"}
+];
+
+/* ---------- dados: glossário e flashcards ---------- */
+const G=[
+["Agente excedentário","Família ou empresa com rendimentos superiores às suas necessidades, que poupa.",1],
+["Agente deficitário","Família ou empresa com escassez de recursos, que recorre a crédito.",1],
+["Intermediação financeira","Captação de recursos junto de quem tem excesso e concessão de crédito a quem tem escassez.",1],
+["Moeda","Intermediário das trocas que permite adquirir qualquer bem ou serviço, facilitando o desenvolvimento das trocas.",2],
+["Divisibilidade","Qualidade de poder ser subdividida sem perda de valor.",2],
+["Homogeneidade","Qualidade de todas as unidades serem do mesmo material e de idêntica qualidade.",2],
+["Cunhabilidade","Qualidade de poder receber um cunho oficial que comprove o carácter de numerário e indique o valor.",2],
+["Talhe doce","Sistema de impressão com relevo sensível ao tacto e combinação gradual de cores sem corte entre elas.",2],
+["Registo perfeito","Desenho geométrico existente nos dois lados da nota que, contra a luz, forma a inscrição BNA perfeitamente delineada.",2],
+["Microimpressão","Letras microimpressas sob a legenda do banco emissor, visíveis apenas com lupa e não reproduzíveis por scanner ou fotocopiadora a cores.",2],
+["OVI","Tinta cuja cor varia conforme o ângulo de visão, presente no canto superior esquerdo de certas denominações.",2],
+["Operação passiva","Operação de captação de recursos. Gera juros passivos, que são custo para o banco.",3],
+["Operação activa","Operação de concessão de crédito. Gera juros activos, que são proveito para o banco.",3],
+["Margem financeira","Juros activos menos juros passivos: MF = JA − JP.",3],
+["Produto bancário","Margem financeira mais serviços bancários cobrados por comissão: PB = MF + SB.",3],
+["Conta-cliente","Expressão contabilística do depósito na escrita do banco, traduzindo a relação com o cliente por lançamentos a débito e a crédito.",4],
+["Ficha de assinatura","Documento onde se registam os titulares, o tipo de conta, as condições especiais de movimentação e os espécimes de assinatura válidos.",4],
+["Conta solidária","Conta colectiva em que basta a assinatura de qualquer um dos titulares para movimentar a débito.",4],
+["Conta conjunta","Conta colectiva que exige as assinaturas de todos os titulares para movimentar a débito.",4],
+["Conta mista","Conta colectiva em que valem as assinaturas de uma parte dos titulares, conforme o estabelecido no acto de abertura.",4],
+["Habilitação de herdeiros","Escritura cuja apresentação levanta o bloqueio da conta decretado por óbito de um titular.",4],
+["Personalidade jurídica","Possibilidade de ser sujeito de direitos ou obrigações. Adquire-se com o nascimento completo com vida, ou com a constituição e registo comercial.",5],
+["Capacidade de exercício","Possibilidade de exercer por si os direitos de que se é titular.",5],
+["Interdição","Supressão ou restrição judicial da capacidade de exercício, por anomalia psíquica, surdez, mudez, cegueira ou situação equiparada. Incapacidade total; representante é o tutor.",5],
+["Inabilitação","Incapacidade parcial decretada judicialmente, nos termos do art.º 152.º do Código Civil. A pessoa carece de autorização de um curador para certos actos.",5],
+["Assinatura a rogo","Assinatura prestada por terceiro a pedido de quem não sabe ou não pode assinar, reconhecida no notário.",5],
+["Sigilo bancário","Instituto jurídico que impõe o dever de segredo como obrigação típica da relação entre banco e cliente.",6],
+["Depositante","O cliente, que confia os valores ao banco.",7],
+["Depositário","O banco, que recebe e fica responsável pelos valores entregues.",7],
+["Depósito à ordem","Modalidade em que o banco fica obrigado a restituir a qualquer momento o dinheiro confiado.",7],
+["Depósito a prazo","Modalidade em que o banco dispõe do capital por período determinado, comprometendo-se o depositante a não levantar antes do vencimento.",7],
+["Depósito com pré-aviso","Modalidade em que o depositante se compromete a avisar previamente, por escrito, antes de efectuar levantamentos.",7],
+["Moeda escritural","Dinheiro que existe como registo contabilístico, sem circulação de notas, e que permite transferências rápidas para credores.",7],
+["Fundo de Garantia de Depósitos","Mecanismo que garante o reembolso dos depósitos em caso de indisponibilidade decretada pelo BNA, no prazo máximo de três meses.",7],
+["Juro","Rendimento do capital. Para o cliente é remuneração recebida; para o banco é montante pago pelo uso do dinheiro alheio.",8],
+["Taxa de juro","Preço que o banco paga pela utilização do dinheiro do cliente, expresso em percentagem referida a um período específico.",8],
+["IAC","Imposto sobre a Aplicação de Capitais, à taxa de 10%, retido na fonte no momento do pagamento dos juros.",8],
+["Capitalização simples","Os juros são creditados em conta à ordem e o depósito renova pelo valor inicial; o juro é igual em cada período.",8],
+["Capitalização composta","Os juros são adicionados ao capital no vencimento e passam a render também.",8],
+["Cartão de débito","Cartão associado a uma conta de depósitos à ordem, que é debitada no momento da operação.",9],
+["Cartão de crédito","Cartão associado a uma conta-cartão e a uma linha de crédito, em que o titular beneficia de crédito concedido pelo emitente.",9],
+["Rede Multicaixa","Rede universal em que qualquer cliente com cartão Multicaixa acede aos serviços nela disponibilizados.",9],
+["ATM","Máquina que permite levantamentos, consulta de saldo e pagamento de alguns serviços.",9],
+["TPA","Terminal de Pagamento Automático, instalado no estabelecimento comercial, que permite pagar bens e serviços com cartão.",9],
+["Acquirer","Entidade que contrata o comerciante, processa os pagamentos com cartão e lhe assegura o recebimento, cobrando comissão.",9],
+["TSC","Taxa de Serviço do Comerciante, de que depende essencialmente a comissão paga pelo comerciante ao acquirer.",9],
+["Ordenante","Cliente bancário que contrata a transferência, por débito da sua conta.",9],
+["Beneficiário","Destinatário, pessoa que vai receber a transferência.",9],
+["Transferência intrabancária","Transferência entre contas domiciliadas no mesmo banco.",9],
+["Transferência interbancária","Transferência entre contas domiciliadas em bancos diferentes; pode ser doméstica ou transfronteira.",9]
+];
+
+/* ---------- utilitários ---------- */
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const nf=(v,d=2)=>v.toLocaleString("pt-PT",{minimumFractionDigits:d,maximumFractionDigits:d});
+const store={
+  get(){try{return JSON.parse(localStorage.getItem("banca5")||"{}")}catch(e){return{}}},
+  set(o){try{localStorage.setItem("banca5",JSON.stringify(o))}catch(e){}}
+};
+const MODNAMES={m1:"Módulo 1",m2:"Módulo 2",m3:"Módulo 3",m4:"Módulo 4",m5:"Módulo 5",m6:"Módulo 6",m7:"Módulo 7",m8:"Módulo 8",m9:"Módulo 9"};
+
+/* ---------- quizzes ---------- */
+function renderQuiz(box,items,prefix,showWhy=true){
+  box.innerHTML="";
+  const h=document.createElement("h4");
+  h.textContent=prefix==="exam"?"25 perguntas":"Autoavaliação — 7 perguntas";
+  box.appendChild(h);
+  items.forEach((it,idx)=>{
+    const q=document.createElement("div");q.className="q";
+    const t=document.createElement("div");t.className="qt";
+    t.innerHTML='<span class="n">'+(idx+1)+'</span><span></span>';
+    t.lastElementChild.textContent=it.q;
+    q.appendChild(t);
+    const ops=document.createElement("div");ops.className="opts";
+    it.o.forEach((o,i)=>{
+      const b=document.createElement("button");
+      b.type="button";b.className="opt";b.dataset.i=i;
+      b.innerHTML='<span class="l">'+"ABCD"[i]+'</span><span></span>';
+      b.lastElementChild.textContent=o;
+      b.addEventListener("click",()=>{
+        if(prefix==="exam"){
+          [...ops.children].forEach(c=>c.classList.remove("sel"));
+          b.classList.add("sel");q.dataset.pick=i;
+        }else{
+          [...ops.children].forEach(c=>{c.disabled=true;});
+          b.classList.add(i===it.a?"ok":"no");
+          if(i!==it.a)ops.children[it.a].classList.add("ok");
+          if(showWhy){const w=document.createElement("div");w.className="why";
+            w.innerHTML="<b>"+(i===it.a?"Certo.":"Não é.")+"</b> ";
+            w.appendChild(document.createTextNode(it.w));q.appendChild(w);}
+        }
+      });
+      ops.appendChild(b);
+    });
+    q.appendChild(ops);
+    box.appendChild(q);
+  });
+}
+$$("[data-quiz]").forEach(b=>{const k=b.dataset.quiz;if(Q[k])renderQuiz(b,Q[k],k);});
+
+/* ---------- exercícios ---------- */
+function renderEx(target,arr){
+  const w=$(target);w.innerHTML="";
+  arr.forEach(e=>{
+    const d=document.createElement("details");d.className="ex";
+    const sm=document.createElement("summary");
+    sm.innerHTML='<span class="tag">'+e.t+'</span><span></span>';
+    sm.lastElementChild.textContent=e.h;
+    d.appendChild(sm);
+    const b=document.createElement("div");b.className="exb";
+    const dd=document.createElement("p");dd.style.color="var(--muted)";dd.style.fontFamily="var(--font-mono)";dd.style.fontSize="14px";dd.textContent=e.d;
+    b.appendChild(dd);
+    const ol=document.createElement("ol");ol.className="steps";
+    e.s.forEach(s=>{const li=document.createElement("li");li.textContent=s;ol.appendChild(li);});
+    b.appendChild(ol);
+    const r=document.createElement("div");r.className="res";r.textContent=e.r;
+    b.appendChild(r);d.appendChild(b);w.appendChild(d);
+  });
+}
+renderEx("#exA",EXA);renderEx("#exB",EXB);
+
+/* ---------- calculadora ---------- */
+const PERYEAR={d:365,m:12,t:4,s:2,a:1};
+function calc(){
+  const c=parseFloat($("#c-cap").value)||0;
+  const ip=parseFloat($("#c-tx").value)||0;
+  const txPer=parseFloat($("#c-txu").value); // períodos da taxa por ano
+  const n=parseFloat($("#c-n").value)||0;
+  const nu=$("#c-nu").value;
+  const nPer=PERYEAR[nu];
+  const reg=$("#c-reg").value;
+  const iAnual=(ip/100)*txPer;          // taxa anual equivalente
+  const iPeriodo=iAnual/nPer;           // taxa na unidade do tempo
+  let jb;
+  if(reg==="s"){ jb=c*n*iPeriodo; }
+  else { jb=c*(Math.pow(1+iPeriodo,n)-1); }
+  const iac=jb*0.10, jl=jb-iac;
+  $("#o-jb").textContent=nf(jb);
+  $("#o-iac").textContent=nf(iac);
+  $("#o-jl").textContent=nf(jl);
+  $("#o-mb").textContent=nf(c+jb);
+  $("#o-ml").textContent=nf(c+jl);
+  $("#o-tp").textContent=nf(iPeriodo*100,4)+" %";
+}
+["c-cap","c-tx","c-txu","c-n","c-nu","c-reg"].forEach(id=>$("#"+id).addEventListener("input",calc));
+calc();
+
+/* ---------- flashcards ---------- */
+let cards=[],ci=0;
+function buildCards(){
+  const f=$("#fc-filter").value;
+  cards=G.filter(g=>f==="all"||String(g[2])===f);
+  ci=0;show();
+}
+function show(){
+  const fc=$("#fc");fc.classList.remove("flip");
+  if(!cards.length)return;
+  const c=cards[ci];
+  $("#fc-term").textContent=c[0];
+  $("#fc-def").textContent=c[1];
+  $("#fc-mod").textContent="Módulo "+c[2];
+  $("#fc-count").textContent=(ci+1)+" / "+cards.length;
+}
+(function(){
+  const sel=$("#fc-filter");
+  sel.innerHTML='<option value="all">Todos os módulos</option>'+[1,2,3,4,5,6,7,8,9].map(i=>'<option value="'+i+'">Módulo '+i+'</option>').join("");
+  sel.addEventListener("change",buildCards);
+  $("#fc").addEventListener("click",()=>$("#fc").classList.toggle("flip"));
+  $("#fc").addEventListener("keydown",e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();$("#fc").classList.toggle("flip");}});
+  $("#fc-next").addEventListener("click",()=>{if(cards.length){ci=(ci+1)%cards.length;show();}});
+  $("#fc-prev").addEventListener("click",()=>{if(cards.length){ci=(ci-1+cards.length)%cards.length;show();}});
+  $("#fc-shuffle").addEventListener("click",()=>{cards.sort(()=>Math.random()-.5);ci=0;show();});
+  buildCards();
+})();
+
+/* ---------- glossário ---------- */
+(function(){
+  const t=$("#glosT");
+  [...G].sort((a,b)=>a[0].localeCompare(b[0],"pt")).forEach(g=>{
+    const tr=document.createElement("tr");
+    const a=document.createElement("td");a.innerHTML="<b></b>";a.firstChild.textContent=g[0];
+    const b=document.createElement("td");b.textContent=g[1];
+    const c=document.createElement("td");c.className="num";c.textContent=g[2];
+    tr.append(a,b,c);t.appendChild(tr);
+  });
+})();
+
+/* ---------- exame ---------- */
+let examSet=[];
+function newExam(){
+  const pool=[];
+  Object.keys(Q).forEach(k=>Q[k].forEach(q=>pool.push(q)));
+  examSet=pool.sort(()=>Math.random()-.5).slice(0,25);
+  renderQuiz($("#examBox"),examSet,"exam");
+  $("#exam-score").hidden=true;
+}
+$("#exam-new").addEventListener("click",newExam);
+$("#exam-grade").addEventListener("click",()=>{
+  const qs=$$("#examBox .q");let ok=0,ans=0;
+  qs.forEach((q,i)=>{
+    const pick=q.dataset.pick;const opts=$$(".opt",q);
+    opts.forEach(o=>{o.disabled=true;o.classList.remove("ok","no","sel");});
+    opts[examSet[i].a].classList.add("ok");
+    if(pick!==undefined){ans++;if(+pick===examSet[i].a)ok++;else opts[+pick].classList.add("no");}
+    if(!$(".why",q)){const w=document.createElement("div");w.className="why";
+      w.innerHTML="<b>"+(pick!==undefined&&+pick===examSet[i].a?"Certo.":"Resposta correcta: "+"ABCD"[examSet[i].a]+".")+"</b> ";
+      w.appendChild(document.createTextNode(examSet[i].w));q.appendChild(w);}
+  });
+  const pct=Math.round(ok/25*100);
+  const box=$("#exam-score");box.hidden=false;
+  box.innerHTML='<div class="score"><div><div class="k" style="font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Resultado</div><div class="big">'+ok+' / 25</div></div>'+
+   '<div><div style="font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Percentagem</div><div class="big" style="color:'+(pct>=70?"var(--good)":"var(--bad)")+'">'+pct+'%</div></div>'+
+   '<div style="flex:1;min-width:160px"><b>'+(pct>=70?"Aprovado.":"Ainda não.")+'</b> '+
+   (pct>=70?"Domina a matéria. Reveja apenas as perguntas que falhou.":"Volte aos módulos das perguntas erradas e repita o exame com novo sorteio.")+
+   (ans<25?' Respondeu a '+ans+' de 25.':'')+'</div></div>';
+  box.scrollIntoView({behavior:"smooth",block:"center"});
+});
+newExam();
+
+/* ---------- progresso ---------- */
+function paint(){
+  const s=store.get();const done=Object.keys(MODNAMES).filter(k=>s[k]);
+  $("#pf").style.width=(done.length/9*100)+"%";
+  $("#pt").textContent=done.length+" / 9";
+  $$("[data-done]").forEach(b=>{
+    const k=b.dataset.done;
+    if(s[k]){b.textContent="Concluído ✓";b.classList.remove("btn-primary");}
+    else{b.textContent="Marcar "+MODNAMES[k].toLowerCase()+" como concluído";b.classList.add("btn-primary");}
+  });
+  $$("#toc a").forEach(a=>{const id=a.getAttribute("href").slice(1);a.classList.toggle("on",!!s[id]);});
+}
+$$("[data-done]").forEach(b=>b.addEventListener("click",()=>{
+  const s=store.get();const k=b.dataset.done;s[k]=!s[k];store.set(s);paint();
+}));
+$("#reset").addEventListener("click",()=>{store.set({});paint();});
+paint();
+</script>
+
+</body></html>
